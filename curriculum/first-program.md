@@ -187,8 +187,8 @@ En Nightcode, en el archivo lines.clj, agregá lo siguiente después del parént
   (q/line 200 200 (q/mouse-x) (q/mouse-y)))
 ```
 
-Aquí llamamos la función `line` cuatro veces. We also call two
-funciones repetidamente con los argumentos de la función `line`:
+Aquí llamamos la función `line` cuatro veces. También podemos llamar
+a las dos funciones repetidamente con los argumentos de la función `line`:
 `mouse-x` y `mouse-y`. These get the current position (x and y
 coordinates on a 2d plane) del mouse. La función `line` tiene cuatro argumentos - dos pares de coordinadas x, y . la primer par x e y son la posición de comienzo de la línea. El segundo par x e y son el final de la posición de la línea. Entonces cuando empecemos cada una de las lineas va a tener un lugar fijo.
 
