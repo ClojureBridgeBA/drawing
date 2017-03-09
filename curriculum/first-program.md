@@ -121,7 +121,7 @@ Clickeá Save en la parte superior de la barra de menú.
 
 ### Dibujando con Quil
 
-Quil biblioteca de Clojure provee el uso de otro biblioteca llamada [Processing](https://processing.org/), una
+Quil es una biblioteca de Clojure provee el uso de otro biblioteca llamada [Processing](https://processing.org/), una
 herramienta que te permite crear dibujos y animaciones. Vamos a usar las funciones de Quil para crear nuestros propios dibujos.
 
 vamos a definir nuestras funciones, como ...
@@ -221,7 +221,7 @@ Atualizá tu dibujo para que:
 
 * El líneas sean de diferente color
 * El título sea diferente
-* El lines empiecen en un lugar diferente
+* El líneas empiecen en un lugar diferente
 
 Bonus: Hacer cada una de las líneas de diferente color.
 
