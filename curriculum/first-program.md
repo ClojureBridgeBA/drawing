@@ -41,7 +41,7 @@ esqueleto:
 Esto usa una componente Clojure, [Quil](https://github.com/quil/quil), que crea dibujos llamados
 sketches.
 
-Ahora vamos a ir hacia adelante y ejecutar el bosquejo de Quil. Abrí Nightcode
+Ahora vamos a ir hacia adelante y ejecutar el boceto de Quil. Abrí Nightcode
 y Importá - buscá la carpeta drawing y clickea. Abrí el archivo `src/drawing/core.clj`
 
 En el fondo del lado derecho:
@@ -58,7 +58,7 @@ Podes cerrar la pop-up clickeando el icono cerrar (X) arriba a la izquierda.
 
 ## Modificar el Proyecto
 
-vamos a crear otro bosquejo de Quil. En Nightcode, elejí drawing en el lado izquierdo del árbol de directorios. 
+vamos a crear otro boceto de Quil. En Nightcode, elejí drawing en el lado izquierdo del árbol de directorios. 
 Clickeá en New File on the top of right side window.
 
 
@@ -110,7 +110,7 @@ En orden de usar estas librerías, Vamos a tener que  _requerirlos_ en nuestro p
 
 Esto nos da acceso a la biblioteca que necesitamos para hacer proyecto.
 
-Hay un par de cosas para ir haciendo There are a couple of things going on here. Primero, el `:require` en
+Hay un par de cosas para ir haciendo. Primero, el `:require` en
 `ns` le dice a  Clojure de cargar otros namespaces. El `:as` del 
 `:require` crea un *alias* para el namespace, dejando que te refieras a su definición sin que se haya tipeado todoel namespace. Por ejemplo, podes usar  `q/fill`  en vez de `quil.core/fill`.
 
@@ -147,7 +147,7 @@ Poniendo todo junto:
    )
 ```
 
-En orden de crear un dibujo (o un bosquejo en el lunfardo de Quil) con Quil, tenés que definir ellas funciones `setup`, `draw`, and `sketch`. `setup` es donde seteas el escenario para tu dibujo. `draw` happens repeatedly,
+En orden de crear un dibujo (o un boceto en el lunfardo de Quil) con Quil, tenés que definir ellas funciones `setup`, `draw`, and `sketch`. `setup` es donde seteas el escenario para tu dibujo. `draw` happens repeatedly,
 Estonces es ahi donde la acción de tu dibujo susede. `sketch` es el escenario en si mismo. Vamos a definir estas funciones juntos y vos vas a poder ver lo que hemos hecho.
 
 En Nightcode, en el archivo lines.clj , agregá lo siguiente despues del paréntesis cerrado del ns de la decalración anterior.
@@ -163,7 +163,9 @@ En Nightcode, en el archivo lines.clj , agregá lo siguiente despues del parént
 ```
 
 Esta es la función de `seteo` que setea el escenario para dibujar.
-Primero, vamos a llamar la función de quil `frame-rate` dejar seteado que se debe redibujar 30  veces por segundo. Ponemos `q/` al frente para decir que es el  `frame-rate` desde quil. Miremos esta declaración ns.
+
+Primero, vamos a llamar la función de quil `frame-rate` dejar seteado que se debe redibujar 30  veces por segundo. 
+Ponemos `q/` al frente para decir que es el  `frame-rate` desde quil. Miremos esta declaración ns.
 Desde que la llamamos así `:as q`, podemos usar a q como la version corta para 
 quil, and `library-name/function-name` es la manera de llamar a la función desde la biblioteca.
 
@@ -209,6 +211,7 @@ title (título) y size (tamaño). Tambien podes decir cuales son los nombres par
 
 Now click - Run with REPL - Reload File - con el cual evalua el archivo.
 Tu dibujo deberia aparecer.
+
 Si no, probá hacer - Save file - Stop - Run with REPL - Reload File.
 
 
