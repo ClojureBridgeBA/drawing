@@ -1,11 +1,11 @@
 Creando tu Primer Programa con Quil
 ===================================
 
-Ahora que conocés un poco acerca de como programar en Clojure, vamos a
+Ahora que conocés un poco acerca de cómo programar en Clojure, vamos a
 crear una app.
 
-En order de hacer esto, tendrás que crear un *proyecto*. Aprenderás como
-organizar tu projecto con *namespaces*. También aprenderás como especificar *dependencias* de tu projecto. Finalmente, aprenderás como *construir* un proyecto para crear la app.
+Para hacer esto, tendrás que crear un *proyecto*. Aprenderás cómo
+organizar tu projecto con *namespaces*. También aprenderás como especificar *dependencias* de tu proyecto. Finalmente, aprenderás como *construir* un proyecto para crear la app.
 
 ## Crear un proyecto
 
