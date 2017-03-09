@@ -1,20 +1,19 @@
-# drawing
+# Dibujar
 
-ClojureBridge capstone app using Quil to draw.
+Primer Proyecto ClojureBridge usando Quil para dibujar.
 
-## Usage
+## Uso
 
-LightTable - open `lines.clj` and press `Ctrl+Shift+Enter` to evaluate
-the file.
+LightTable - Abrí `lines.clj` and presioná `Ctrl+Shift+Enter` para evaluar el archivo.
 
 REPL - run `(require 'drawing.lines)`.
 
 ## Curriculum
 
-* [Making Your First Program with Quil](curriculum/first-program.md)
+* [Creando tu Primer Programa con Quil](curriculum/first-program.md)
 * [I Want to Create Something Cool with Quil! (pt. 2)] (curriculum/create-something.md)
 
-## Quil and Processing Resources
+## Quil y Recursos de Procesamiento
 
 * [fun-with-quil](https://github.com/quephird/fun-with-quil) - A repo chock full of very cool Quil sketches from Danielle Kefford
 * [Quil](https://github.com/quil/quil)
