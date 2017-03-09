@@ -120,7 +120,7 @@ Clickeá Save en la parte superior de la barra de menú.
 
 ### Dibujando con Quil
 
-Quil es una biblioteca de Clojure que provee el uso de otro biblioteca llamada [Processing](https://processing.org/), una
+Quil es una biblioteca de Clojure que provee el uso de otra biblioteca llamada [Processing](https://processing.org/), una
 herramienta que te permite crear dibujos y animaciones. Vamos a usar las funciones de Quil para crear nuestros propios dibujos.
 
 vamos a definir nuestras funciones, como ...
@@ -147,7 +147,7 @@ Poniendo todo junto:
 ```
 
 Para crear un dibujo (o un boceto en el lunfardo de Quil) con Quil, tenés que definir las funciones `setup`, `draw`, y `sketch`. `setup` es donde seteas el escenario para tu dibujo. `draw` se ejecuta de forma repetida,
-entonces es ahé donde la acción de tu dibujo sucede. `sketch` es el escenario en sí mismo. Vamos a definir estas funciones juntos y vos vas a poder ver lo que hemos hecho.
+entonces es ahí donde la acción de tu dibujo sucede. `sketch` es el escenario en sí mismo. Vamos a definir estas funciones juntos y vos vas a poder ver lo que hemos hecho.
 
 En Nightcode, en el archivo lines.clj , agregá lo siguiente después del paréntesis cerrado del ns de la decalración anterior.
 
@@ -164,9 +164,9 @@ En Nightcode, en el archivo lines.clj , agregá lo siguiente después del parén
 Esta es la función de `setup` que setea el escenario para dibujar.
 
 Primero, vamos a llamar a la función de quil `frame-rate` para dejar seteado que se debe redibujar 30  veces por segundo. 
-Ponemos `q/` al frente para decir que es el `frame-rate` de quil. Miremos esta declaración ns.
+Ponemos `q/` al frente para decir que es el `frame-rate` de quil. Miremos la declaración del ns.
 Desde que la llamamos así `:as q`, podemos usar a `q` como la version corta para 
-quil, y `library-name/function-name` es la manera de llamar a la función desde la biblioteca.
+quil, y `library-name/function-name` es la manera de llamar a la función de una biblioteca.
 
 Después, vamos a setear el modo del color a RGB.
 
@@ -205,7 +205,7 @@ en un plano 2d) del mouse. La función `line` tiene cuatro argumentos - dos pare
   :features [:keep-on-top])
 ```
 
-Este es tu boceto. Podé setear los atributos del boceto como 
+Este es tu boceto. Podés setear los atributos del boceto como 
 title (título) y size (tamaño). Tambien podés decir cuáles son los nombres para las funciones setup y draw. Estos tienen que ser exactamente iguales a los nombres de funciones que usamos anteriormente. La última línea es para que la ventana de nuestra app de dibujo esté arriba de todo.
 
 Ahora hacé click en - Run with REPL - Reload File - con lo cual se evalúa el archivo.
