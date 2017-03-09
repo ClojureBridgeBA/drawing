@@ -1,6 +1,6 @@
 # Dibujar
 
-Primer Proyecto ClojureBridge usando Quil to draw.
+Primer Proyecto ClojureBridge usando Quil para dibujar.
 
 ## Uso
 
