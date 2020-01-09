@@ -229,54 +229,54 @@ reescribirla así:
 Esta funcionalidad es basante útil y frecuentemente utilizada por Clojuristas.
 
 
-## Step 2. Snowflake falling down
+## Step 2. Copo de nieve cayendo al piso
 
-Clara was satisfied with the image of the white snowflake on the blue
-background. However, that was boring. For the next step, she wanted to
-move the snowflake like it was falling down. This needed further Quil
-API study and googling.
+Clara estaba contenta con la imagen del copo de nieve blanco sobre el fondo
+azul, pero le empezó a parecer aburrida. Para el próximo paso quería mover el
+copo de nieve como si estuviera cayendo al piso. Para esto necesitaba seguir
+estudiando la API de Quil y googlear un poco más.
 
-As far as she searched, moving some pieces in the image is called
-**animation**. The basic idea is:
+Encontró que a mover piezas en una imagen se le llama **animación**, y que
+básicamente la idea es:
 
-- draw the image at some position
-- update the position
-- draw the image at updated position
+- dibujar la imagen en alguna posición,
+- actualizar la posición, y
+- dibujar otra vez la imagen, pero en la nueva posición.
 
-So-called animations repeat these steps again and again.
+La animaciones repiten estos pasos una y otra vez.
 
-### step 2-1: Add `y` parameter update
+### Paso 2-1: Agregar actualización del parámetro `y`
 
-"Well," Clara thought, "What does 'moving the snowflake like it was
-falling down' mean in terms of programming?"
+"Bueno", pensó clara, "¿qué significa 'mover el copo de nieve como si estuviera
+cayendo al piso' desde el punto de vista de la programación?".
 
-To draw the snowflake, she used Quil's `image` function, described in
-the API:
+Para dibujar el copo de nieve, había usado la función `image` de Quil, explicada
+en la documentación de la API:
 [image](http://quil.info/api/image/loading-and-displaying#image).
 
-The x and y parameters were 200 and 10 from the upper-left corner,
-which was the position she set to draw the snowflake. To make it fall
-down, the y parameter should be increased as time goes by.
+Los valores que eligió para los parámetros `x` e `y` fueron 200 y 10 medidos
+desde la esquina superior-izquierda, porque esa era la posición en la que quería
+dibujar el copo de nieve. Para hacerlo caer, el parámetro `y` debería
+incrementarse a medida que pasa el tiempo.
 
-![x and y](images/x-y-grid.png)
+![x e y](images/x-y-grid.png)
 
-In terms of programming, 'moving the snowflake like it was falling
-down' means:
+Desde el punto de vista de la programación, 'mover el copo de nieve como si
+estuviera cayendo al piso', significa:
 
-1. Set the initial state--for example, `(x, y) = (200, 10)`
-2. Draw the background first, then the snowflake
-3. Update the state - increase the `y` parameter--for example, `(x, y) = (200, 11)`
-4. Draw the background again first, then the snowflake
-5. Repeat 2 and 3, increasing the `y` parameter.
+1. Definir el estado inicial — por ejemplo, `(x, y) = (200, 10)`.
+2. Dibujar el fondo primero, y después el copo de nieve.
+3. Actualizar el estado incrementando el parámetro `y` — por ejemplo, `(x, y) = (200, 11)`.
+4. Volver a dibujar el fondo primero, y después el copo de nieve.
+5. Repetir los puntos 3 y 4.
 
-In her application, "changing state" includes only the `y`
-parameter. How could she increment the `y` value by one?
+En su app, el único estado que necesita cambiar es el parámetro `y`. ¿Cómo hizo
+para incrementar en uno el valor de `y`? Clojure tiene la función `inc`, que es
+exactamente la función que usó.
 
-Yes, Clojure has the `inc` function. This is the function she used.
-
-To update `y` parameter:
-- Add an initial `y` parameter in the map of `setup` function, which
-  represents **state**
+Para actualizar el parámetro `y`:
+- Agregar un parámetro `y` inicial en el mapa de la función `setup`, que
+  representa el **estado**.
 
     ```clojure
     {:flake (q/load-image "images/white_flake.png")
@@ -284,7 +284,8 @@ To update `y` parameter:
      :y-param 10}
     ```
 
--  Add a new function `update` which will increment the `y` parameter by one
+-  Agregar una nueva función `update` que incrementa en uno el valor del
+   parámetro `y`.
 
     ```clojure
     (defn update [state]
@@ -292,7 +293,7 @@ To update `y` parameter:
       (update-in state [:y-param] inc))
     ```
 
--  Add the `update` function in the `q/defsketch` form
+-  Agregar la función `update` en la forma `q/defsketch`.
 
     ```clojure
     (q/defsketch practice
@@ -305,14 +306,14 @@ To update `y` parameter:
       :middleware [m/fun-mode])
     ```
 
-### step 2-2: Draw the image on updated position
+### Paso 2-2: Dibujar la imagen en la posición actualizada
 
-So far, the app got the feature to update `y` parameter;
-however, this is not enough to make the snowflake falling down.
-The snowflakes should be put on the updated position.
+Si bien la app ahora tiene la funcionalidad de actualizar el parámetro `y`, no
+le alcanza para hacer que el copo de nieve caiga. El copo de nieve se tiene que
+dibujar en la nueva posición actualizada.
 
-Clara changed the `draw` function so that `q/image` could have updated
-`y` parameter.
+Clara cambió la función `draw` para que `q/image` use el parámetro `y`
+actualizado.
 
 ```clojure
 (defn draw [state]
@@ -321,12 +322,12 @@ Clara changed the `draw` function so that `q/image` could have updated
   (q/image (:flake state) 200 (:y-param state)))
 ```
 
-She added one more function, `(q/smooth)`, to `setup` since this would
-make animation move smoothly.
+Además, agregó una función más a `setup`, `(q/smooth)`, para que la animación
+sea más fluida.
 
-### `practice.clj` in step 2
+### `practice.clj` al final del paso 2
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -359,8 +360,8 @@ At this point, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code--hey! She saw the snowflake was falling
-down.
+Cuando Clara ejecutó este código, pudo ver como el copo de nieve caia al piso —
+genial!
 
 
 ## Step 3. Make the snowflake keep falling down from top to bottom
