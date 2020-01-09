@@ -364,41 +364,40 @@ Cuando Clara ejecutó este código, pudo ver como el copo de nieve caia al piso 
 genial!
 
 
-## Step 3. Make the snowflake keep falling down from top to bottom
+## Paso 3. Hacer que copo de nieve siga cayendo una y otra vez
 
-Clara got a nice Quil app. But, once the snowflake went down beyond
-the bottom line, that was it. Only a blue background remained on the
-window. So, she wanted it to repeat again and again.
+Clara tenía una linda app Quil, pero se terminaba muy rápido. Una vez que el
+copo de nieve pasaba el borde inferior de la ventana, solo quedaba el fondo
+azul. Por eso, ella quería que se repita, una y otra vez.
 
-In other words: if the snowflake reaches the bottom, it should come
-back to the top. Then, it should fall down again.
+En otras palabras: si el copo de nieve llega al fondo debería reaparecer por la
+parte superior y volver a caer.
 
-In terms of programming, what does that mean?
+¿Qué significa desde el punto de vista de la programación?"
 
-If the `y` parameter is greater than the height of the image, `y`
-parameter should go back to `0`. Otherwise, the `y` parameter should
-be incremented by one. That said, there exist two cases to update `y`
-parameter.
+Si el valor del parámetro `y` es mayor que el alto de la imagen, entonces su
+valor debe volver a `0`. Si no lo es, su valor debe incrementarse en uno. Ahora
+existen dos formas de actualizar el parámetro `y`.
 
-Clara recalled `if` was used for
-[Flow Control](http://clojurebridge.github.io/curriculum/outline/flow_control.html)
-at the ClojureBridge workshop. It looked `if` would handle the two cases
-well like this:
+
+Clara se acordó que en workshop de ClojureBridge había usado `if`
+[Flow Control](http://clojurebridge.github.io/curriculum/outline/flow_control.html).
+ Parecía que con `if` iba a poder elegir entre los dos casos.
 
 ```clojure
 (defn update [state]
-  (if (>= (:y-param state) (q/height)) ;; y-param is greater than or equal to image height?
-    (assoc state :y-param 0)           ;; true - get it back to the 0 (top)
-    (update-in state [:y-param] inc)   ;; false - update y paraemter by one
+  (if (>= (:y-param state) (q/height)) ;; y-param es igual o mayor que el alto de la imagen?
+    (assoc state :y-param 0)           ;; si - vuelve a 0 (arriba)
+    (update-in state [:y-param] inc)   ;; no - incrementar en 1
     ))
 ```
 
-So, she used `if` to make the snowflake go back to the top in the
-update function.
+Y así fue como Clara uso `if` para hacer que el copo de nieve vuelva arriba de
+todo en la función `update`.
 
-### `practice.clj` in step 3
+### `practice.clj` al final del paso 3
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -412,7 +411,7 @@ At this point, `practice.clj` looks like this:
    :y-param 10})
 
 (defn update [state]
-  ;; these three lines were added in step 3
+  ;; estas tres líneas se agregan en el paso 3
   (if (>= (:y-param state) (q/height))
     (assoc state :y-param 0)
     (update-in state [:y-param] inc)))
@@ -431,9 +430,8 @@ At this point, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-Clara saw the snowflake appeared from the top after it went down below
-the bottom line.
-
+Cuando Clara ejecutó este código, pudo ver al copo de nieve aparecer por arriba
+después de desaparecer por abajo.
 
 ## Step 4. Make more snowflakes falling down from top to bottom
 
