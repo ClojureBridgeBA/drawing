@@ -1,54 +1,53 @@
-I want to create something cool with Quil!
-===========================================
+¡Quiero crear algo copado con Quil!
+===================================
 
-    This is a story of Clara who attended a ClojureBridge workshop recently.
-    At the workshop, she learned what Clojure is and how to write Clojure code.
-    That really impressed her, "How functional!"
-    Also, Clara met an interesting drawing tool, Quil, which is written in Clojure.
-    When Clara learned how to use Quil, she thought, "I want to create something cool with Quil!"
-    Here's how Clara developed her own Quil application.
+    Esta es la historia de Clara, que hacía poco había asistido a un workshop de
+    ClojureBridge.
+    En el workshop aprendió lo que era Clojure y cómo escribir código en Clojure.
+    Quedó realmente impresionada, ¡qué funcional!.
+    Además, había conocido una herramienta para dibujar muy interesante que se
+    llamaba Quil y estaba programada en Clojure.
+    Cuando Clara aprendió a usar Quil, pensó, "¡quiero crear algo copado con
+    Quil!"
+    Así fue como Clara desarrollo su propia app con Quil.
 
-## Step 1. Snowflake on a blue background
+## Paso 1. Un copo de nieve en un fondo azul
 
-Clara considered where to start while looking at her first drawing application.
-Then, a small light turned on in her mind, "a white snowflake on a blue background looks nice."
-What she wanted to know was how to make a background blue and put a snowflake on it.
-Clara already learned how to find the way. It was:
+Clara estaba pensando por dónde empezar cuando de repente se le prendió la
+lamparita: "un copo de nieve blanco con un fondo azul estaría muy bien".
+Ahora quería saber cómo dibujarlo y ya sabía como descubrirlo:
 
-1. Go to the API documentation website
-2. Google it
+1. Ir al website con la documentación de la API
+2. Googlearlo
 
-Following that, Clara went to the Quil API web site,
-[http://quil.info/api](http://quil.info/api), and found the
-[Loading and Displaying](http://quil.info/api/image/loading-and-displaying)
-section. Then, she found the
-[background-image](http://quil.info/api/color/setting#background-image)
-function.
+Inmediatamente, Clara visitó [http://quil.info/api](http://quil.info/api), donde
+está documentada la API de Quil, y encontró la sección [Image > Loading and
+Displaying](http://quil.info/api/image/loading-and-displaying). También encontró
+la función
+[background-image](http://quil.info/api/color/setting#background-image).
 
-Then, she googled and found a StackOverflow question,
-[Load/display image in clojure with quil](http://stackoverflow.com/questions/18714941/load-display-image-in-clojure-with-quil), which
-looked like helpful.
-She also went to ClojureBridge drawing resources section,
-[Quil and Processing Resources](https://github.com/ClojureBridge/drawing#quil-and-processing-resources).
-Browsing at web sites listed there for a while, she found an interesting Xmas tree
-example,
+Después, googleó y llegó a una pregunta en StackOverflow que parecía útil,
+[Load/display image in clojure with
+quil](http://stackoverflow.com/questions/18714941/load-display-image-in-clojure-with-quil).
+Además revisó la sección de recursos de ClojureBridge [Quil and Processing
+Resources](https://github.com/ClojureBridge/drawing#quil-and-processing-resources).
+Hojeando los web sites que apareceren ahí, descubrió un ejemplo prometedor,
 [xmas-tree.clj](https://github.com/quephird/fun-with-quil/blob/master/src/fun_with_quil/animations/xmas-tree.clj),
-which displayed a xmas tree read from a file in a window.
-"This should be what I want," she delighted in getting those useful search results.
+que carga un archivo de una imagen con un árbol de navidad y la muestra en una ventana.
+"Esto debería ser lo que quiero", pensó, encantada con los resultados de su búsqueda.
 
-OK, for now, she got enough information to accomplish step 1.
+Ahora tenía toda la información que necesitaba para completar el primer paso.
 
-At the ClojureBridge workshop, Clara went though the Quil app
-tutorial,
-[Making Your First Program with Quil](https://github.com/ClojureBridge/drawing/blob/master/curriculum/first-program.md),
-so she already had the `drawing` Clojure project.  She decided to use
-the same project for her own app.
+En el workshop de ClojureBridge, Clara había completado el tutorial, [Making
+Your First Program with
+Quil](https://github.com/ClojureBridge/drawing/blob/master/curriculum/first-program.md),
+por lo que ya tenía el proyecto de Clojure `drawing` en su computadora. Decidió
+usar el mismo ptoyecto para su app para no tener que crear uno nuevo.
 
-### step 1-1: Create a new source file
+### Paso 1-1: Crear un nuevo archivo fuente
 
-Clara added a new file under `src/drawing` directory with the name
-`practice.clj`.  At this point, her directory structure looks like the
-below:
+Clara agregó un nuevo archivo dentro del directorio `src/drawing` con el nombre 
+`practice.clj`. A esta altura, sus archivos se ven así:
 
 ```
 drawing
@@ -59,30 +58,28 @@ drawing
     └── drawing
         ├── core.clj
         ├── lines.clj
-        └── practice.clj      <-- this file is added in step 1-1
+        └── practice.clj      <-- se agrega en el paso 1-1
 ```
 
-### step 1-2: Add namespace - make the source code clojure-ish
+### Paso 1-2: Agregar el namespace — hacer el código fuente clojurístico
 
-First, Clojure source code has a namespace declaration, so Clara
-copy-pasted `ns` from the top of her `lines.clj` file. But, she
-changed the name from `drawing.lines` to `drawing.practice`, because
-her new file has the name `practice`.
+Al principio de un archivo fuente de Clojure se encuentra la declaración del
+namespace. Clara, copió y pegó la forma `ns` que estaba arriba de todo en el
+archivo `lines.clj`. En seguida, cambió el nombre de `drawing.lines` a
+`drawing.practice`, porque el nuevo archivo se llama `practice`.
 
-At this moment, `practice.clj` looks like this:
+En este momento, `practice.clj` se ve así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]))
 ```
 
-### step 1-3: Add basic Quil code
+### Paso 1-3: Agregar el código básico de Quil
 
-Basic Quil code has `setup` and `draw` functions, along with a
-`defsketch` macro, which defines the app. Following these Quil rules,
-Clara added those things into her `practice.clj`.
-
-Now, `practice.clj` looks like this:
+Las funciones `setup` y `draw`, junto con la macro `defsketch`, que define la
+app, necesitan estar presentes en cualquier código que use Quil. Por esta razón,
+Clara las agregó a `practice.clj`, que ahora quedó ve así:
 
 ```clojure
 (ns drawing.practice
@@ -101,22 +98,22 @@ Now, `practice.clj` looks like this:
   :features [:keep-on-top])
 ```
 
-### step 1-4: Download and put snowflake and background images
+### Paso 1-4: Descargar las imágenes del copo de nieve y el fondo
 
-Looking at the Quil API and the StackOverflow question, Clara learned
-that where to put her image files was important. She created a new
-directory, `images`, under the top `drawing` directory, and
-[put two images there](https://github.com/ClojureBridge/drawing/tree/master/images).
+Leyendo la API de Quil y la pregunta en StackOverlow, Clara aprendió que el
+lugar dónde se guaraban las imágenes era importante. Entonces, creó un nuevo
+directorio, llamado `images`, dentro del directorio principal `drawing`, y
+[descargó las imágenes ahí](https://github.com/ClojureBridge/drawing/tree/master/images).
 
-Now, her directory structure looks like the one below:
+Ahora, sus archivos quedaron así:
 
 ```
 drawing
 ├── LICENSE
 ├── README.md
 ├── images
-│   ├── blue_background.png      <-- added in step 1-4
-│   └── white_flake.png          <-- added in step 1-4
+│   ├── blue_background.png      <-- se agrega en el paso 1-4
+│   └── white_flake.png          <-- se agrega en el paso 1-4
 ├── project.clj
 └── src
     └── drawing
@@ -125,26 +122,26 @@ drawing
         └── practice.clj
 ```
 
-### step 1-5: Add framework
+### Paso 1-5: Habilitar el modo funcional
 
-So far, the images were ready, the next step was to code using the Quil API.
+Ahora que las imágenes estaban listas, el próximo paso era usarlas a través de
+la API de Quil.
 
-Clara was back to the xmas tree example and learned her application needed
-one more library to add, `[quil.middleware :as m]` within `:require`.
-This was a quite new experience to her. To figure out what's that and how
-to use, Clara walked through the document
+Clara volvió al ejemplo del árbol de navidad y se dió cuenta que su app
+necesitaba habilitar el modo funcional — fue toda una experiencia. Para
+descifrar exactamente qué era y como usarlo, Clara recorrió el documento
 [Functional mode (fun mode)](https://github.com/quil/quil/wiki/Functional-mode-(fun-mode)).
 
-When she finished the document, she murmured, "Ha, fun mode, nice
-name, isn't it? What I should do here is... to add":
+Cuando terminó de leer el documento, murmuró "¡Ja! Fun mode, ¡que nombre
+gracioso! (_fun_ significa _divertido _en Inglés). Entonces... lo que tengo que
+hacer es agregar:"
 
-1. `[quil.middleware :as m]` in the `ns` form
-2. `:middleware [m/fun-mode]` in the `q/defsketch` form
-3. function argument `state` to `draw` function
+1. `[quil.middleware :as m]` en el `:require` de la forma `ns`,
+2. `:middleware [m/fun-mode]` en la forma `q/defsketch`, y
+3. el argumento `state` a la función `draw`
 
-"to my `practice.clj`. OK, let's do it!"
-
-At this moment, `practice.clj` looks like this:
+"a mi archivo `practice.clj`. Ok, ¡puedo hacerlo!". Y su archivo `practice.clj`
+ahora se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -164,20 +161,23 @@ At this moment, `practice.clj` looks like this:
   :middleware [m/fun-mode])             ;; this line is added in step 1-5
 ```
 
-### step 1-6: Load snowflake and background images
+### Paso 1-6: Cargar y mostrar las imágenes del copo de nieve y el fondo
 
-Clara already knew the final pieces to load images were:
+Clara ya sabía cuáles eran las últimas piezas que faltaban para poder cargar y
+mostar las imágenes:
 
-1. in `setup` function, load images and return those as a **state**
-2. in `draw` function, look the contents in `state` argument and draw images
+1. En la función`setup`, cargar las imágenes y devolverlas en el **estado**.
+2. En la función `draw`, obtener las imágenes del estado (mirando el contenido
+   del argumento `state`) y dibujarlas.
 
-So, she added a few lines of code to the `setup` and `draw` functions in
-her `practice.clj`. She was careful when writing the image filenames
-because it should reflect the actual directory structure.
+Entonces, agregó un par de líneas de código a las funciones `setup` y `draw` en
+su `practice.clj`. Tuvo mucho cuidado cuando escribió los nombres de los
+archivos de las imágenes porque deben coincidir exactamente y reflejar la
+estructura de directorios.
 
-### `practice.clj` in step 1
+### `practice.clj` al final del paso 1
 
-At this moment, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -205,18 +205,20 @@ At this moment, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code, she saw this image:
+Cuando Clara ejecutó este código, pudo ver esta imagen:
 
 ![step 1 screenshot](images/step-1.png)
 
-Woohoo! She made it!
+Vaamoos! Lo logró!
 
 
-#### [bonus] destructuring
+#### [Bonus] Desestructuración
 
-Clojure has a nice feature called,
-[destructuring](http://clojurebridge.github.io/community-docs/docs/clojure/destructuring/).
-Using the destructuring in a function argument, we can write `draw` function like this:
+Clojure tiene una funcionalidad muy copada que se llama desestructucturación o 
+[destructuring](http://clojurebridge.github.io/community-docs/docs/clojure/destructuring/)
+en Inglés.
+Si se usa la desestructucturación en el argumento de la función `draw` podemos
+reescribirla así:
 
 ```clojure
 (defn draw [{flake :flake background :background}]
@@ -224,7 +226,7 @@ Using the destructuring in a function argument, we can write `draw` function lik
   (q/image flake 200 10))
 ```
 
-Clojurians often use this handy feature.
+Esta funcionalidad es basante útil y frecuentemente utilizada por Clojuristas.
 
 
 ## Step 2. Snowflake falling down
