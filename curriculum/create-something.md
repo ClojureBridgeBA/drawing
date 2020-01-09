@@ -518,31 +518,33 @@ A esta altura, `practice.clj` se veía así:
 "Si!" Clara gritó al ver tres copos de nieve cayendo una y otra vez.
 
 
-## Step 5. Make snowflakes keep falling down at different speed
+## Paso 5. Hacer que los copos de nieve caigan a distintas velocidades
 
-Although her app looked lovely, Clara felt something was not quite
-right. In her window, all three snowflakes fell down at the same
-speed like a robots' march. It did not look natural. So, she wanted to
-make them fall down at different speed.
+A pesar de que su app se veía encantadora, Clara no podía evitar sentir que algo no
+estaba del todo bien. En su ventana, los tres copos de nieve caían a la misma
+velocidad, como si estuvieran en una marcha de robots. No se sentía natural. Por
+esto quiso hacer que cada uno caiga a una velocidad distinta.
 
-Using programming terms, the problem here is that all three snowflakes
-share the same `y` parameter.
-Given that using multiple `y` parameters would solve the problem--but how?
+Usando términos de programación, el problema es que los tres copos de nieve
+comparten el mismo parámetro `y`. Varios parámetros `y` solucionarían el
+problema pero, ¿cómo lo implementaríamos?
 
-### step 5-1 Change `y` parameters to maps with speeds
+### Paso 5-1 Cambiar el parámetro `y` por mapas con velocidades
 
-As she used `vector` for the x parameters, the `vector` would be a good data
-structure to have different `y` parameters as well. However, this
-should not be a simple vector since each snowflake will have two
-parameters, height and speed. Having these two, Clara could change the
-falling speed of each snowflake.
+Al igual que con los parámetros `x`, un `vector` es una buena estructura de
+datos para tener diferentes parámetros `y`. Sin embargo, este vector no puede
+ser exactamente igual al que usó para los parámetros `x` ya que cada copo de
+nieve tiene dos parámetros: la posición y la velocidad. Tener los dos parámetros
+le permitiría a Clara cambiar la velocidad a la que cae cada copo de nieve.
 
-Well, she was back to ClojureBridge curriculum and went to
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html).
-There was a data structure called `Maps` which allowed her to save
-multiple parameters. Looking at maps examples, she changed the `y-param` from a
-single value to a vector of 3 maps. Also, the keyword was changed from
-`y-param` to `y-params`. Now her initial **state** became this:
+Entonces volvió a la currícula de ClojureBridge y repasó la sección de
+[Estructuras de Datos
+](http://clojurebridge.github.io/curriculum/outline/data_structures.html). Ahí
+había una estructura de datos llama Mapa que le permitía guardar varios
+parámetros juntos. Después de ver los ejemplos de mapas, cambió `y-param` de un
+valor simple (un número) a un vector de 3 mapas. Además, cambió la clave de
+`y-param` a `y-params`. A partir de ese momento, su **estado** inicial se
+convirtió en esto: d
 
 ```clojure
 {:flake (q/load-image "images/white_flake.png")
@@ -550,44 +552,44 @@ single value to a vector of 3 maps. Also, the keyword was changed from
  :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]}
 ```
 
-It was a nice data structure, actually maps in a vector in a map
-including outer map. Downside was, her `update` function would not be
-simple anymore. What she had to do was updating all `y` values in
-the three maps within a vector.
+Era una buena estrucura de datos, mapas dentro de un vector que a su vez estaba
+dentro de otro mapa. Lo malo era que su función `update` no iba a poder seguir
+siendo simple, ahora tenía que actualizar los valores `y` de cada uno de los
+tres mapas del vector.
 
+### Paso 5-2 Actualizar valores en los mapas del vector
 
-### step 5-2 Update values in maps in the vector
-
-Thinking both map and vector at the same time was confusing to her, so
-she decided to think about map only. Each map has `y` parameter and
-`speed`:
+Pensar al mismo tiempo en mapas y vectores le resultaba confuso, entonces
+decidió concentrarse solo en un mapa. Cada mapa tiene un parámetro `y` y
+`speed`. Por ejemplo, el siguiente mapa podría ser parte del **estado** inicial:
 
 ```clojure
 {:y 150 :speed 4}
 ```
-as an initial **state**. The very next moment, speed should be added
-to y value. As a result, the map should be updated to:
+
+Inmediatamente, la velocidad `speed` debería sumarse al valor de `y`, por lo que
+el mapa debería actualizarse a:
 
 ```clojure
 {:y 154 :speed 4}
 ```
 
-To accomplish this map update, Clara added `update-y` function:
+Para lograr esto, Clara agregó la función `update-y`:
 
 ```clojure
 (defn update-y
   [m]
   (let [y (:y m)
         speed (:speed m)]
-    (if (>= y (q/height))           ;; y is greater than or equal to image height?
-      (assoc m :y 0)                ;; true - get it back to the 0 (top)
-      (update-in m [:y] + speed)))) ;; false - add y value and speed
+    (if (>= y (q/height))           ;; y es igual o mayor que el alto de la imagen?
+      (assoc m :y 0)                ;; si - vuelve a 0 (arriba)
+      (update-in m [:y] + speed)))) ;; no - sumar el valor de y y speed
 ```
 
-#### [bonus] destructuring
+#### [Bonus] Desestructuración
 
-Using Clojure's destructuring, we can write `update-y` function like
-this:
+Usando la desestructuración de Clojure, podemos escribir `update-y` de esta
+manera:
 
 ```clojure
 (defn update-y
@@ -597,30 +599,32 @@ this:
     (update-in m [:y] + speed)))
 ```
 
-As in the code, we can skip let binding.
+Así nos evitamos de escribir la forma especial `let`.
 
 
-### step 5-3 Update maps in the vector
+### Paso 5-3 Actualizar los mapas en el vector
 
-Next step is to update maps in the vector using `update-y` function.
-Before writing this part, Clara cut down the problem to focus on
-updating a vector: how to update contents in a vector. She remembered
-there was a `map` function which allowed her to apply a function to
-each element in the vector.
-[`map` function](http://clojurebridge.github.io/curriculum/outline/functions.html#/9)
+El siguiente paso es actualizar los mapas en el vector usando la función
+`update-y`. Antes de programar a esta parte, Clara redujo el problema para
+concentrarse en actualizar un vector: ¿cómo se actualizan los datos dentro un
+vector?. Se acordó que existía una [función
+`map`](http://clojurebridge.github.io/curriculum/outline/functions.html#/9) que
+le permitía aplicar una función a cada elmento del vector.
 
-For example:
+Por ejemplo:
 
 ```clojure
 (map inc [1 2 3]) ;=> (2 3 4)
 ```
 
-> Clojure has a `map` function and `map` data structure.
-> Be careful, this is confusing.
-> In Python, function is a `map`, data structure is dictionary.
-> In Ruby, function is a `map` or `collect`, data structure is hash.
+> Clojure tiene una función `map` y una estructura de datos también llamada
+> `map` (mapa).
+> Ten cuidado, es confuso.
+> En Python, `map` es la función, y diccionario es la estructura de datos.
+> En Ruby, `map` (tamibén llamada `collect`) es la función, y hash es la
+> estructura de datos.
 
-She tested the function on the insta-REPL:
+Entonces probó la función en el REPL:
 
 ```clojure
 (defn update-test
@@ -637,10 +641,10 @@ She tested the function on the insta-REPL:
 ;=> ({:y 11, :speed 1} {:y 154, :speed 4} {:y 52, :speed 2})
 ```
 
-It looked good, so she got back to her `practice.clj` file to change
-`update` function. This function should return the **state** as the
-map which includes `:y-params` key with the update vector as a value.
-Her `update` function became like this:
+Como funcionó bien, volvió a su archivo `practice.clj` para cambiar la función
+`update`. Esta función debe devolver el **estado** actualizado. En su caso, lo
+único que es necesario actualizar es el vector asociado a la clave `y-params`.
+Así, su función `update` se convirtió en:
 
 ```clojure
 (defn update [state]
@@ -649,17 +653,18 @@ Her `update` function became like this:
 ```
 
 
-### step 5-4 Update draw function to see maps in the vector
+### Paso 5-4 Actualizar la función draw para que vea los mapas del vector
 
-Another challenge was the `draw` function change to see values in the
-maps which were in the vector.
-Clara found a couple of ways to repeat something in Clojure. Among
-them, she chose `dotimes` and `nth` to repeatedly draw images; the
-`nth` function is the one in the curriculum:
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html#/6)
+Otro desafío fue el cambio que necesitó hacerle a la función `draw` para que
+pueda ver los mapas que se encontraban en el vector. Clara encontró varias
+maneras de repertir algo en Clojure. Entre ellas, eligió una alternativa que
+usaba `dotimes` y `nth` para dibujar imágenes repetidamente — la función `nth`
+es la que se explica en la sección [Estructuras de
+Datos](http://clojurebridge.github.io/curriculum/outline/data_structures.html#/6)
+de la currícula.
 
-In this case, she knew there were exactly 3 snowflakes, so she changed
-the code to draw 3 snowflakes as shown below:
+En este caso, como sabía que había exactamente 3 copos de nieves, pudo cambiar
+el código por el siguiente:
 
 ```clojure
 (let [y-params (:y-params state)]
@@ -667,9 +672,9 @@ the code to draw 3 snowflakes as shown below:
       (q/image (:flake state) (nth x-params n) (:y (nth y-params n)))))
 ```
 
-### `practice.clj` in step 5
+### `practice.clj` al final del paso 5
 
-At this point, her entire `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -682,9 +687,9 @@ At this point, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]})  ;; changed in step 5-1
+   :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]})  ;; se cambió en el paso 5-1
 
-;; update-y function was added in step 5-2
+;; función update-y se agregó en el paso 5-2
 (defn update-y
   [m]
   (let [y (:y m)
@@ -694,12 +699,12 @@ At this point, her entire `practice.clj` looks like this:
       (update-in m [:y] + speed))))
 
 (defn update [state]
-  (let [y-params (:y-params state)]                   ;; update function
-    (assoc state :y-params (map update-y y-params)))) ;; was changed in step 5-3
+  (let [y-params (:y-params state)]                   ;; función update
+    (assoc state :y-params (map update-y y-params)))) ;; se cambió en el paso 5-3
 
 (defn draw [state]
   (q/background-image (:background state))
-  (let [y-params (:y-params state)]   ;; three lines below were changed in step 5-4
+  (let [y-params (:y-params state)]   ;; 3 líneas se cambiaron en el paso 5-4
     (dotimes [n 3]
       (q/image (:flake state) (nth x-params n) (:y (nth y-params n))))))
 
@@ -713,9 +718,8 @@ At this point, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When she ran the code, three snowflakes kept falling down at
-different speeds. It looked more natural.
-
+Cuando Clara ejecutó este código, tres copos de nieve cayeron a distintas
+velocidades y se veía más natural.
 
 ## Step 6. Do some "refactoring"
 
