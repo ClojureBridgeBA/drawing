@@ -433,18 +433,17 @@ A esta altura, `practice.clj` se veía así:
 Cuando Clara ejecutó este código, pudo ver al copo de nieve aparecer por arriba
 después de desaparecer por abajo.
 
-## Step 4. Make more snowflakes falling down from top to bottom
+## Paso 4. Agregar más copos de nieve cayendo
 
-Clara thought, "It's nice to look at the snowflake falls down many
-times. But I have only one snowflake. Can I add more?"
-She wanted to see more snowflakes falling down: one or more on the left
-half, as well as one or more on the right half.
+Clara pensó, "es lindo como cae el copo de nieve una y otra vez, pero tengo uno
+solo, ¿puedo agregar más?". Ella quería ver más copos de nieve cayendo: uno o
+más en la mitad izquierda, y uno o más en la mitad derecha.
 
-Again, she needed to express her thoughts by the words of programming
-world. Looking at her code already written, she figures out, "This
-would be 'draw multiple images with the different `x` parameters.'"
-The easiest way would be to copy-paste `(q/image (:flake state) 200 (:y-param state)`
-multiple times with the different `x` parameters. For example,
+Una vez más, necesitaba expresar sus pensamientos usando palabras del mundo de
+la programación. Mirándo al código que había escrito, se da cuenta que se
+traduciría a "dibujar varias imágenes con distintos valores para el parámetro
+`x`". La forma más simple sería copiar y pegar `(q/image (:flake state) 200
+(:y-param state)` varias veces con diferentes valores de `x`. Por ejemplo:
 
 ```clojure
 (q/image (:flake state) 10 (:y-param state))
@@ -452,42 +451,43 @@ multiple times with the different `x` parameters. For example,
 (q/image (:flake state) 390 (:y-param state))
 ```
 
-But, for Clara, this did not look nice; she learned a lot about
-Clojure and wanted to use what she knew.
+Pero para clara, esto no se veía bien; había aprendido un montón sobre Clojure y
+quería ponerlo en práctica.
 
-First, she thought about how to keep multiple `x` parameters. She
-remembered there was a `Vectors` in the
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html)
-section, which looked a good fit in this case.
+Pensando en cómo mantener registro de varios parámetros `x` se acordó de los
+vectores que vió cuando aprendió sobre [Estructuras de
+Datos](http://clojurebridge.github.io/curriculum/outline/data_structures.html) y
+le parecieron una buena idea.
 
-Here's what she did to add more snowflakes:
+Esto es lo que hizo para agregar más copos de nieve:
 
-1. Add a vector which has multiple `x` parameters assigned to a name
-with `def`.
+1. Agregar un vector, con varios parámetros `x`, y asignarle un nombre con
+   `def`.
 
     ```clojure
-    (def x-params [10 200 390]) ;; x parameters for three snowflakes
+    (def x-params [10 200 390]) ;; parámetros x para 3 copos de nieve
     ```
 
-2. Draw snowflakes as many times as the number of `x`-params using `doseq`.
+2. Dibujar varios copos de nieve, uno por cada parámetro `x`, usando `doseq`.
 
     ```clojure
     (doseq [x x-params]
       (q/image (:flake state) x (:y-param state)))
     ```
 
-* See, [doseq](http://clojurebridge.github.io/curriculum/outline/sequences.html#/3)
+* Para recordar como funciona `doseq` podés consultar la
+  [currícula](http://clojurebridge.github.io/curriculum/outline/sequences.html#/3).
 
-### `practice.clj` in step 4
+### `practice.clj` al final del paso 4
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
-(def x-params [10 200 390])                      ;; added in step 4
+(def x-params [10 200 390])                      ;; se agregó en el paso 4
 
 (defn setup []
   (q/smooth)
@@ -502,8 +502,8 @@ At this point, `practice.clj` looks like this:
 
 (defn draw [state]
   (q/background-image (:background state))
-  (doseq [x x-params]                              ;; two lines were changed
-    (q/image (:flake state) x (:y-param state))))  ;; in step 4
+  (doseq [x x-params]                              ;; dos líneas se cambiaron
+    (q/image (:flake state) x (:y-param state))))  ;; en el paso 4
 
 (q/defsketch practice
   :title "Clara's Quil practice"
@@ -515,7 +515,7 @@ At this point, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-"Yes!" Clara shouted when she saw three snowflakes kept falling down.
+"Si!" Clara gritó al ver tres copos de nieve cayendo una y otra vez.
 
 
 ## Step 5. Make snowflakes keep falling down at different speed
