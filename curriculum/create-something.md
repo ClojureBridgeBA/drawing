@@ -721,22 +721,24 @@ A esta altura, `practice.clj` se veía así:
 Cuando Clara ejecutó este código, tres copos de nieve cayeron a distintas
 velocidades y se veía más natural.
 
-## Step 6. Do some "refactoring"
+## Paso 6. "Refactorizar"
 
-Clara looked at her `practice.clj` thinking her code got longer for a while.
+Clara miró a su archivo `practice.clj` pensando que su código se había vuelto
+bastante largo.
 
-Scanning her code from top to bottom again, she thought
-"`x-params` may be part of the **state**," for example:
+Después de escanear otra vez su código de arriba a abajo, pensó "tal vez
+`x-params` podría ser parte del **estado**". Por ejemplo:
 
 ```clojure
 [{:x 10 :y 10 :speed 1} {:x 200 :y 150 :speed 4} {:x 390 :y 50 :speed 2}]
 ```
 
-She found that this new data structure was easy to maintain the state of each snowflake.
+Se encontró con que esta nueva estructura de datos facilitaba la tarea de
+mantener el estado de cada copo de nieve.
 
-To use this new data structure, she changed her `setup` function to
-return the initial **state** which included x parameters also. The key
-name was changed from `:y-params` to `:params`:
+Para usar la nueva estructura de datos, cambió su función `setup` para que el
+**estado** inicial incluya los parámetros `x`. Además, cambió el nombre de la
+clave `:y-params` a `:params`:
 
 ```clojure
 {:flake (q/load-image "images/white_flake.png")
@@ -746,12 +748,13 @@ name was changed from `:y-params` to `:params`:
             {:x 390 :y 50  :speed 2}]}
 ```
 
-Clara stared at `update-y` function and concluded to leave as it was.
-Since existence of `:x` and its value didn't affect updating y value.
-The function returned the map with three key-value pairs with updated y value.
+Clara miró fijamente a la función `update-y` y concluyó dejarla como estaba. La
+existencia de `:x` y su valor no afectaba la lógica que actualizaba el valor de
+`:y`. La función devolvía el mapa con tres pares clave-valor con el valor de
+`:y` actualizado.
 
-What about `update` function? This needed a little change since key
-name was changed from `:y-params` to `:params`.
+¿Qué pasaba con la función `update`? Necesitaba un pequeño cambio dado que el
+nombre de la clave cambió de `:y-params` a `:params`.
 
 ```clojure
 (defn update [state]
@@ -759,9 +762,9 @@ name was changed from `:y-params` to `:params`.
     (assoc state :params (map update-y params))))
 ```
 
-The `draw` function would have a bigger change since the way to
-extract x values was changed.
-At first, Clara changed `dotimes` function like this:
+La función `draw` requería un cambio mayor porque la forma en la que se extraían
+los valores de `:x` había cambiado. En un primer lugar, Clara cambió la forma
+`dotimes` así:
 
 ```clojure
 (let [params (:params state)]
@@ -769,10 +772,11 @@ At first, Clara changed `dotimes` function like this:
     (q/image (:flake state) (:x (nth params n)) (:y (nth params n)))))
 ```
 
-But, the exact the same thing, `(nth params n)`, appeared twice.
-"Is there anything better to avoid repetition?" she thought.
-The answer was easy - use `let` binding within `dotimes` function.
-Using `let`, her `dotimes` form turned to:
+Pero la misma cosa, `(nth params n)`, aparecía dos veces. "¿Hay algo mejor para
+evitar la repetición?" pensó. La respuesta era fácil — usar la forma especial
+`let` dentro de la función `dotimes`.
+
+Al usar `let`, su forma `dotimes` se quedó así:
 
 ```clojure
 (let [params (:params state)]
@@ -781,11 +785,11 @@ Using `let`, her `dotimes` form turned to:
       (q/image (:flake state) (:x param) (:y param)))))
 ```
 
-The last line got much cleaner!
+¡Esa última línea quedó mucho más limpia!
 
-### `practice.clj` in step 6
+### `practice.clj` al final del paso 6
 
-At this moment, her entire `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -796,7 +800,7 @@ At this moment, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :params [{:x 10  :y 10  :speed 1}                       ;; changed in step 6
+   :params [{:x 10  :y 10  :speed 1}                       ;; se cambió en el paso 6
             {:x 200 :y 150 :speed 4}                       ;;
             {:x 390 :y 50  :speed 2}]})                    ;;
 
@@ -809,12 +813,12 @@ At this moment, her entire `practice.clj` looks like this:
       (update-in m [:y] + speed))))
 
 (defn update [state]
-  (let [params (:params state)]                    ;; changed to params in step 6
+  (let [params (:params state)]                    ;; se cambió por params en el paso 6
     (assoc state :params (map update-y params))))  ;;
 
 (defn draw [state]
   (q/background-image (:background state))
-  (let [params (:params state)]                            ;; changed in step 6
+  (let [params (:params state)]                            ;; se cambió en el paso 6
     (dotimes [n 3]                                         ;;
       (let [param (nth params n)]                          ;;
         (q/image (:flake state) (:x param) (:y param)))))) ;;
@@ -829,8 +833,8 @@ At this moment, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-She saw the exact same result as the step 5, but her code
-looked nicer. This sort of work is often called "refactoring".
+Clara no vió ningún cambio con respecto al paso 5, pero el código se veía mucho
+mejor. A este tipo de trabajo se lo conoce comunmente como "refactorización".
 
 ## Step 7. Make snowflakes swing as falling down
 
