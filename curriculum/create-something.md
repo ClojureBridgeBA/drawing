@@ -889,56 +889,57 @@ Su función `setup` se convirtió en esto:
             {:x 390 :swing 2 :y 50  :speed 2}]})
 ```
 
-### step 7-2 Calculate x values to swing snowflakes
+### Paso 7-2 Calcular valores de x para balancear los copos de nieve
 
-Updating x values were quite similar to the one for y values.
-Like Clara added the `update-y` function, she was about to write
-`update-x` function. But she stopped and thought, "How can I calculate
-updated x values?" sketching a curve in her mind.
+Clara pensó en actualizar los valores de `x` de forma similar a la actualización
+de los valores de `y`. Sin embargo, justo antes de escribir la función
+`update-x` sacó las manos del teclado y pensó "¿Cómo puedo calcular los nuevos
+valores de `x`?" mientras dibujaba la curva de su trayectoria en su mente.
 
-She went to Quil api document and scanned the functions thinking some
-might have helped her. She found
-[`sin`](http://quil.info/api/math/trigonometry#sin) function which
-was to calculate the sine of an angle. Also she recalled what was the shape
-of sine curve.
+Volvió a la documentación de la API de Quil y escaenó las funciones pensando que
+alguna podría ayudarla. Encontró la función
+[`sin`](http://quil.info/api/math/trigonometry#sin) que calcula el seno de un
+ángulo y se imaginó la gráfica de la curva de esa función.
 
-The curve she want had roughly the shape of:
+La curva que quería tenía una forma muy parecida a:
 
 ```
 x = sin(y)
 ```
 
-If she considered the size of window, a couple more parameters were
-needed to make swing look nice, for example:
+Pero, si consideraba el tamaño de la ventana, iba a necesitar algunos parametros
+más para que el balanceo se vea bien, por ejemplo:
 
 ```
 x = x + a * sin(y / b)
 ```
 
-The parameter `a` exactly works as the `swing` she added to the **state**.
-When the `swing` is 1, the curve traces like in the left image. While
-the `swing` is 3, the curve becomes the right image.
+El parámetro `a` funciona exactamente como el `swing` que había agregado al
+**estado**. Cuando `swing` es 1, la curva se comporta como la imagen de la
+izquierda. Mientras que cuando `swing` es 3, la curva se convierte en la que se
+muestra en la imagen de la derecha.
 
 ![swing is 1](images/1-sin-x.png)  ![swing is 3](images/3-sin-x.png)
 
-The parameter `b` adjusts distances between peeks. If the value is
-small, the snowflake goes left and right busily. On the other hand, if
-the value is big, the snowflakes moves loosely. Thinking of the size
-of window, 50 would be a good number for `b`.
-Given that, the update function would be:
+El parámetro `b` ajusta la distancia entre los picos. Si el valor es pequeño, el
+copo de nieve va de izquierda a derecha muy agitadamente. Por el otro lado, si
+el valor es grande, el copo de nieve se va a mover más relajadamente. Al
+considerar el tamaño de la ventana, 50 sería un buen número para `b`. Teniendo
+en cuenta todo lo anterior, la función que se encarga de actualizar `x` quedaría
+así:
 
 ```
 x = x + swing * sin(y / 50)
 ```
 
-Not just update x values, the function should handle the cases x is
-smaller than 0 (too left), and x is greater than image width (too
-right). When the x value goes to less than `0`, it should take the value of the
-image width, so that the snowflake will appear from the right.
-Likewise, when the x value goes to more than the image width, it
-should have value `0` so that the snowflake will appear from the left.
-Reflecting this conditions, her `update-x` function became
-like this:
+Pero esto no era todo. La función además debía considerar los casos en los que
+`x` es menor que 0 (muy a la izquierda) y que `x` es mayor que el ancho de la
+imagen (muy a la derecha). Cuando el valor de `x` se hace más chico que 0, `x`
+debería tomar el ancho de la imagen así el copo de nieve aparece por la derecha
+cuando desaparece por la izquierda. De manera similar, cuando el valor de `x` se
+hace más grande que el ancho de la imagen, debería hacerse 0, así el copo de
+nieve aparece por la izquierda. Con estas nuevas restricciones, su función
+`update-x` quedo así:
 
 ```clojure
 (defn update-x
@@ -952,20 +953,20 @@ like this:
      :else (assoc m :x 0))))                                         ;; too right
 ```
 
-In this function, she couldn't use `if` anymore since `if` takes only one
-predicate (comparison). Instead of `if`, she used `cond` which allowed
-her to handle multiple comparisons.
+En esta función, Clara no podía seguir usando `if` porque `if` solamente acepta
+un predicado (comparación). En lugar de `if`, usó `cond` que permite realizar
+varias comparaciones.
 
+### Paso 7-3 Actualizar los valores de x e y de los mapas del vector
 
-### step 7-3 Update x and y values in maps in the vector
-
-Clara got `update-y` and `update-x` functions. The next step would be
-to use these functions to update x and y values in maps in the vector.
-This would not be a big deal for her anymore. Tricky thing was it
-needed after updating y values in maps, it should update x values in
-the same maps. Luckily, Clojure's `let` binding treats this sort of
-value changes well. Within `let`, each binding is evaluated from the
-first to last one by one. The `update` function turned to this:
+Clara tenía listas las funciones `update-x` y `update-y`. El próximo paso era
+ahora usar esas funciones para actualizar los valores de `x` e `y` en los mapas
+del vector. Por suerte, ya no le parecía un gran desafío. Lo único novedoso era
+que después de actualizar los valores de `y` en los mapas, necesitaba actualizar
+los valores de `x` en los mismos mapas. La forma `let` de Clojure permite
+realizar este tipo de actualizaciones. Dentro de `let`, las asignaciones se
+evalúan una por una, empezando por la primera, luego la segunda, y así hasta
+llegar a la última. La función `update` quedó así:
 
 ```clojure
 (defn update [state]
@@ -975,20 +976,21 @@ first to last one by one. The `update` function turned to this:
     (assoc state :params params)))
 ```
 
-The first binding assigns params vector to a name, `params`. The second
-binding updates y values in the `params` (maps in vector) and assigns to the
-name, `params`. The third binding updates x values in the `params`
-(maps in vector) and assigns to the name, `params`. When `params`
-comes to the body of `let` function, in other words, the line of
-`assoc`, both x and y values are already updated.
-
-These were all to swing the snowflakes. She could use `draw` function
-as it was.
+La primer asignación asocia el vector con los parámetros al nombre `params`. La
+segunda asignación actualiza los valores `y` en los mapas de `params` y asigna
+el resultado, otra vez, al nombre `params`. La tercer y última asignación, 
+actualiza los valores `x` en los mapas de `params` y asigna el resultado, otra
+vez, al nombre `params`. En el cuerpo de `let` (la línea que empieza con
+`assoc`) `params` tiene los valores de `x` e `y` ya acutalizados.
 
 
-### `practice.clj` in step 7
+No necesitaba nada más para balancear los copos de nieve, podía usar la función
+`draw` como estaba sin ninguna modificación.
 
-At this point, her entire `practice.clj` looks like this:
+
+### `practice.clj` al final del paso 7
+
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -999,11 +1001,11 @@ At this point, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :params [{:x 10  :swing 1 :y 10  :speed 1}       ;; swing was added in step 7-1
+   :params [{:x 10  :swing 1 :y 10  :speed 1}       ;; swing se agregó en el paso 7-1
             {:x 200 :swing 3 :y 100 :speed 4}       ;;
             {:x 390 :swing 2 :y 50  :speed 2}]})    ;;
 
-;; this update-x function was added in step 7-2
+;; función update-x se agregó en el paso 7-2
 (defn update-x
   [m]
   (let [x (:x m)
@@ -1025,7 +1027,7 @@ At this point, her entire `practice.clj` looks like this:
 (defn update [state]
   (let [params  (:params state)
         params (map update-y params)
-        params (map update-x params)]               ;; added in step 7-3
+        params (map update-x params)]               ;; se agregó en el paso 7-3
     (assoc state :params params)))
 
 (defn draw [state]
@@ -1045,16 +1047,16 @@ At this point, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code, she saw snowflakes were falling down,
-swinging left and right tracing sine curve.
-"Cool!" she shouted with joy.
+Cuando Clara ejecutó este código, vio como los copos de nieve se balanceaban de
+izquierda a derecha siguiendo una curva seonidal mientras caían. "¡Copado!"
+gritó con alegría.
 
-Still, she could a couple more improvements including refactoring,
-Clara was satisfied with her app. Moreover, she started
-thinking about her next, more advanced app in Clojure!
+Aunque le faltaban algunas mejoras y refactorizaciones, Clara ya
+estaba estaba contenta con su app. Por otra parte, ¡ya había empezado a pensar en
+su próxima app en Clojure! Iba a ser muhco más avanzada.
 
-The End.
+Fin.
 
 
 --------------
-Snowflake is designed by Freepik, http://www.flaticon.com/packs/snowflakes
+Snowflake (el copo de nieve) fue diseñado por Freepik, http://www.flaticon.com/packs/snowflakes
