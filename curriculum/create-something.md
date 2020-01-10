@@ -85,7 +85,7 @@ Clara las agregó a `practice.clj`, que ahora quedó ve así:
 (ns drawing.practice
   (:require [quil.core :as q]))
 
-;; setup and draw functions and q/defsketch are added in step 1-3
+;; funciones setup y draw, y q/defsketch se agregan en el paso 1-3
 (defn setup [])
 
 (defn draw [])
@@ -146,11 +146,11 @@ ahora se veía así:
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]
-            [quil.middleware :as m]))  ;; this line is added in step 1-5
+            [quil.middleware :as m]))  ;; esta línea se agrega en paso 1-5
 
 (defn setup [])
 
-(defn draw [state])                    ;; argument state is added in step 1-5
+(defn draw [state])                    ;; argumento state se agrega en paso 1-5
 
 (q/defsketch practice
   :title "Clara's Quil practice"
@@ -158,7 +158,7 @@ ahora se veía así:
   :setup setup
   :draw draw
   :features [:keep-on-top]
-  :middleware [m/fun-mode])             ;; this line is added in step 1-5
+  :middleware [m/fun-mode])             ;; esta línea se agrega en paso 1-5
 ```
 
 ### Paso 1-6: Cargar y mostrar las imágenes del copo de nieve y el fondo
@@ -185,13 +185,13 @@ A esta altura, `practice.clj` se veía así:
             [quil.middleware :as m]))
 
 (defn setup []
-  ;; these two lines, a map (data structure) is added in step 1-6
+  ;; el mapa (estructura de datos) de estas dos líneas se agregan en paso 1-6
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")}
   )
 
 (defn draw [state]
-  ;; q/background-image and q/image functions are added in step 1-6
+  ;; funciones q/background-image y q/image se agregan en paso 1-6
   (q/background-image (:background state))
   (q/image (:flake state) 200 10)
   )
@@ -289,7 +289,7 @@ Para actualizar el parámetro `y`:
 
     ```clojure
     (defn update [state]
-      ;; updating y paraemter by one
+      ;; actualizando el parámetro y, incrementando en 1
       (update-in state [:y-param] inc))
     ```
 
@@ -317,7 +317,7 @@ actualizado.
 
 ```clojure
 (defn draw [state]
-  ;; drawing blue background and a snowflake on it
+  ;; dibujando un fondo azul con un copo de nieve arriba
   (q/background-image (:background state))
   (q/image (:flake state) 200 (:y-param state)))
 ```
@@ -335,26 +335,26 @@ A esta altura, `practice.clj` se veía así:
             [quil.middleware :as m]))
 
 (defn setup []
-  (q/smooth)                                      ;; added in step 2-2
+  (q/smooth)                                      ;; se agrega en paso 2-2
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :y-param 10}                                   ;; added in step 2-1
+   :y-param 10}                                   ;; se agrega en paso 2-1
   )
 
-;; update function is added in step 2-1
+;; función update se agrega en paso 2-1
 (defn update [state]
   (update-in state [:y-param] inc))
 
 (defn draw [state]
   (q/background-image (:background state))
-  (q/image (:flake state) 200 (:y-param state))    ;; changed in step 2-2
+  (q/image (:flake state) 200 (:y-param state))    ;; se cambia en paso 2-2
   )
 
 (q/defsketch practice
   :title "Clara's Quil practice"
   :size [500 500]
   :setup setup
-  :update update                                   ;; added in step 2-1
+  :update update                                   ;; se agrega en paso 2-1
   :draw draw
   :features [:keep-on-top]
   :middleware [m/fun-mode])
