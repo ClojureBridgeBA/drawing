@@ -1,54 +1,53 @@
-I want to create something cool with Quil!
-===========================================
+¡Quiero crear algo copado con Quil!
+===================================
 
-    This is a story of Clara who attended a ClojureBridge workshop recently.
-    At the workshop, she learned what Clojure is and how to write Clojure code.
-    That really impressed her, "How functional!"
-    Also, Clara met an interesting drawing tool, Quil, which is written in Clojure.
-    When Clara learned how to use Quil, she thought, "I want to create something cool with Quil!"
-    Here's how Clara developed her own Quil application.
+    Esta es la historia de Clara, que hacía poco había asistido a un workshop de
+    ClojureBridge.
+    En el workshop aprendió lo que era Clojure y cómo escribir código en Clojure.
+    Quedó realmente impresionada, ¡qué funcional!.
+    Además, había conocido una herramienta para dibujar muy interesante que se
+    llamaba Quil y estaba programada en Clojure.
+    Cuando Clara aprendió a usar Quil, pensó, "¡quiero crear algo copado con
+    Quil!"
+    Así fue como Clara desarrollo su propia app con Quil.
 
-## Step 1. Snowflake on a blue background
+## Paso 1. Un copo de nieve en un fondo azul
 
-Clara considered where to start while looking at her first drawing application.
-Then, a small light turned on in her mind, "a white snowflake on a blue background looks nice."
-What she wanted to know was how to make a background blue and put a snowflake on it.
-Clara already learned how to find the way. It was:
+Clara estaba pensando por dónde empezar cuando de repente se le prendió la
+lamparita: "un copo de nieve blanco con un fondo azul estaría muy bien".
+Ahora quería saber cómo dibujarlo y ya sabía como descubrirlo:
 
-1. Go to the API documentation website
-2. Google it
+1. Ir al website con la documentación de la API
+2. Googlearlo
 
-Following that, Clara went to the Quil API web site,
-[http://quil.info/api](http://quil.info/api), and found the
-[Loading and Displaying](http://quil.info/api/image/loading-and-displaying)
-section. Then, she found the
-[background-image](http://quil.info/api/color/setting#background-image)
-function.
+Inmediatamente, Clara visitó [http://quil.info/api](http://quil.info/api), donde
+está documentada la API de Quil, y encontró la sección [Image > Loading and
+Displaying](http://quil.info/api/image/loading-and-displaying). También encontró
+la función
+[background-image](http://quil.info/api/color/setting#background-image).
 
-Then, she googled and found a StackOverflow question,
-[Load/display image in clojure with quil](http://stackoverflow.com/questions/18714941/load-display-image-in-clojure-with-quil), which
-looked like helpful.
-She also went to ClojureBridge drawing resources section,
-[Quil and Processing Resources](https://github.com/ClojureBridge/drawing#quil-and-processing-resources).
-Browsing at web sites listed there for a while, she found an interesting Xmas tree
-example,
+Después, googleó y llegó a una pregunta en StackOverflow que parecía útil,
+[Load/display image in clojure with
+quil](http://stackoverflow.com/questions/18714941/load-display-image-in-clojure-with-quil).
+Además revisó la sección de recursos de ClojureBridge [Quil and Processing
+Resources](https://github.com/ClojureBridge/drawing#quil-and-processing-resources).
+Hojeando los web sites que apareceren ahí, descubrió un ejemplo prometedor,
 [xmas-tree.clj](https://github.com/quephird/fun-with-quil/blob/master/src/fun_with_quil/animations/xmas-tree.clj),
-which displayed a xmas tree read from a file in a window.
-"This should be what I want," she delighted in getting those useful search results.
+que carga un archivo de una imagen con un árbol de navidad y la muestra en una ventana.
+"Esto debería ser lo que quiero", pensó, encantada con los resultados de su búsqueda.
 
-OK, for now, she got enough information to accomplish step 1.
+Ahora tenía toda la información que necesitaba para completar el primer paso.
 
-At the ClojureBridge workshop, Clara went though the Quil app
-tutorial,
-[Making Your First Program with Quil](https://github.com/ClojureBridge/drawing/blob/master/curriculum/first-program.md),
-so she already had the `drawing` Clojure project.  She decided to use
-the same project for her own app.
+En el workshop de ClojureBridge, Clara había completado el tutorial, [Making
+Your First Program with
+Quil](https://github.com/ClojureBridge/drawing/blob/master/curriculum/first-program.md),
+por lo que ya tenía el proyecto de Clojure `drawing` en su computadora. Decidió
+usar el mismo ptoyecto para su app para no tener que crear uno nuevo.
 
-### step 1-1: Create a new source file
+### Paso 1-1: Crear un nuevo archivo fuente
 
-Clara added a new file under `src/drawing` directory with the name
-`practice.clj`.  At this point, her directory structure looks like the
-below:
+Clara agregó un nuevo archivo dentro del directorio `src/drawing` con el nombre 
+`practice.clj`. A esta altura, sus archivos se ven así:
 
 ```
 drawing
@@ -59,36 +58,34 @@ drawing
     └── drawing
         ├── core.clj
         ├── lines.clj
-        └── practice.clj      <-- this file is added in step 1-1
+        └── practice.clj      <-- se agrega en el paso 1-1
 ```
 
-### step 1-2: Add namespace - make the source code clojure-ish
+### Paso 1-2: Agregar el namespace — hacer el código fuente clojurístico
 
-First, Clojure source code has a namespace declaration, so Clara
-copy-pasted `ns` from the top of her `lines.clj` file. But, she
-changed the name from `drawing.lines` to `drawing.practice`, because
-her new file has the name `practice`.
+Al principio de un archivo fuente de Clojure se encuentra la declaración del
+namespace. Clara, copió y pegó la forma `ns` que estaba arriba de todo en el
+archivo `lines.clj`. En seguida, cambió el nombre de `drawing.lines` a
+`drawing.practice`, porque el nuevo archivo se llama `practice`.
 
-At this moment, `practice.clj` looks like this:
+En este momento, `practice.clj` se ve así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]))
 ```
 
-### step 1-3: Add basic Quil code
+### Paso 1-3: Agregar el código básico de Quil
 
-Basic Quil code has `setup` and `draw` functions, along with a
-`defsketch` macro, which defines the app. Following these Quil rules,
-Clara added those things into her `practice.clj`.
-
-Now, `practice.clj` looks like this:
+Las funciones `setup` y `draw`, junto con la macro `defsketch`, que define la
+app, necesitan estar presentes en cualquier código que use Quil. Por esta razón,
+Clara las agregó a `practice.clj`, que ahora quedó ve así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]))
 
-;; setup and draw functions and q/defsketch are added in step 1-3
+;; funciones setup y draw, y q/defsketch se agregan en el paso 1-3
 (defn setup [])
 
 (defn draw [])
@@ -101,22 +98,22 @@ Now, `practice.clj` looks like this:
   :features [:keep-on-top])
 ```
 
-### step 1-4: Download and put snowflake and background images
+### Paso 1-4: Descargar las imágenes del copo de nieve y el fondo
 
-Looking at the Quil API and the StackOverflow question, Clara learned
-that where to put her image files was important. She created a new
-directory, `images`, under the top `drawing` directory, and
-[put two images there](https://github.com/ClojureBridge/drawing/tree/master/images).
+Leyendo la API de Quil y la pregunta en StackOverlow, Clara aprendió que el
+lugar dónde se guaraban las imágenes era importante. Entonces, creó un nuevo
+directorio, llamado `images`, dentro del directorio principal `drawing`, y
+[descargó las imágenes ahí](https://github.com/ClojureBridge/drawing/tree/master/images).
 
-Now, her directory structure looks like the one below:
+Ahora, sus archivos quedaron así:
 
 ```
 drawing
 ├── LICENSE
 ├── README.md
 ├── images
-│   ├── blue_background.png      <-- added in step 1-4
-│   └── white_flake.png          <-- added in step 1-4
+│   ├── blue_background.png      <-- se agrega en el paso 1-4
+│   └── white_flake.png          <-- se agrega en el paso 1-4
 ├── project.clj
 └── src
     └── drawing
@@ -125,35 +122,35 @@ drawing
         └── practice.clj
 ```
 
-### step 1-5: Add framework
+### Paso 1-5: Habilitar el modo funcional
 
-So far, the images were ready, the next step was to code using the Quil API.
+Ahora que las imágenes estaban listas, el próximo paso era usarlas a través de
+la API de Quil.
 
-Clara was back to the xmas tree example and learned her application needed
-one more library to add, `[quil.middleware :as m]` within `:require`.
-This was a quite new experience to her. To figure out what's that and how
-to use, Clara walked through the document
+Clara volvió al ejemplo del árbol de navidad y se dió cuenta que su app
+necesitaba habilitar el modo funcional — fue toda una experiencia. Para
+descifrar exactamente qué era y como usarlo, Clara recorrió el documento
 [Functional mode (fun mode)](https://github.com/quil/quil/wiki/Functional-mode-(fun-mode)).
 
-When she finished the document, she murmured, "Ha, fun mode, nice
-name, isn't it? What I should do here is... to add":
+Cuando terminó de leer el documento, murmuró "¡Ja! Fun mode, ¡que nombre
+gracioso! (_fun_ significa _divertido _en Inglés). Entonces... lo que tengo que
+hacer es agregar:"
 
-1. `[quil.middleware :as m]` in the `ns` form
-2. `:middleware [m/fun-mode]` in the `q/defsketch` form
-3. function argument `state` to `draw` function
+1. `[quil.middleware :as m]` en el `:require` de la forma `ns`,
+2. `:middleware [m/fun-mode]` en la forma `q/defsketch`, y
+3. el argumento `state` a la función `draw`
 
-"to my `practice.clj`. OK, let's do it!"
-
-At this moment, `practice.clj` looks like this:
+"a mi archivo `practice.clj`. Ok, ¡puedo hacerlo!". Y su archivo `practice.clj`
+ahora se veía así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]
-            [quil.middleware :as m]))  ;; this line is added in step 1-5
+            [quil.middleware :as m]))  ;; esta línea se agrega en paso 1-5
 
 (defn setup [])
 
-(defn draw [state])                    ;; argument state is added in step 1-5
+(defn draw [state])                    ;; argumento state se agrega en paso 1-5
 
 (q/defsketch practice
   :title "Clara's Quil practice"
@@ -161,23 +158,26 @@ At this moment, `practice.clj` looks like this:
   :setup setup
   :draw draw
   :features [:keep-on-top]
-  :middleware [m/fun-mode])             ;; this line is added in step 1-5
+  :middleware [m/fun-mode])             ;; esta línea se agrega en paso 1-5
 ```
 
-### step 1-6: Load snowflake and background images
+### Paso 1-6: Cargar y mostrar las imágenes del copo de nieve y el fondo
 
-Clara already knew the final pieces to load images were:
+Clara ya sabía cuáles eran las últimas piezas que faltaban para poder cargar y
+mostar las imágenes:
 
-1. in `setup` function, load images and return those as a **state**
-2. in `draw` function, look the contents in `state` argument and draw images
+1. En la función`setup`, cargar las imágenes y devolverlas en el **estado**.
+2. En la función `draw`, obtener las imágenes del estado (mirando el contenido
+   del argumento `state`) y dibujarlas.
 
-So, she added a few lines of code to the `setup` and `draw` functions in
-her `practice.clj`. She was careful when writing the image filenames
-because it should reflect the actual directory structure.
+Entonces, agregó un par de líneas de código a las funciones `setup` y `draw` en
+su `practice.clj`. Tuvo mucho cuidado cuando escribió los nombres de los
+archivos de las imágenes porque deben coincidir exactamente y reflejar la
+estructura de directorios.
 
-### `practice.clj` in step 1
+### `practice.clj` al final del paso 1
 
-At this moment, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -185,13 +185,13 @@ At this moment, `practice.clj` looks like this:
             [quil.middleware :as m]))
 
 (defn setup []
-  ;; these two lines, a map (data structure) is added in step 1-6
+  ;; el mapa (estructura de datos) de estas dos líneas se agregan en paso 1-6
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")}
   )
 
 (defn draw [state]
-  ;; q/background-image and q/image functions are added in step 1-6
+  ;; funciones q/background-image y q/image se agregan en paso 1-6
   (q/background-image (:background state))
   (q/image (:flake state) 200 10)
   )
@@ -205,18 +205,20 @@ At this moment, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code, she saw this image:
+Cuando Clara ejecutó este código, pudo ver esta imagen:
 
 ![step 1 screenshot](images/step-1.png)
 
-Woohoo! She made it!
+Vaamoos! Lo logró!
 
 
-#### [bonus] destructuring
+#### [Bonus] Desestructuración
 
-Clojure has a nice feature called,
-[destructuring](http://clojurebridge.github.io/community-docs/docs/clojure/destructuring/).
-Using the destructuring in a function argument, we can write `draw` function like this:
+Clojure tiene una funcionalidad muy copada que se llama desestructucturación o 
+[destructuring](http://clojurebridge.github.io/community-docs/docs/clojure/destructuring/)
+en Inglés.
+Si se usa la desestructucturación en el argumento de la función `draw` podemos
+reescribirla así:
 
 ```clojure
 (defn draw [{flake :flake background :background}]
@@ -224,57 +226,57 @@ Using the destructuring in a function argument, we can write `draw` function lik
   (q/image flake 200 10))
 ```
 
-Clojurians often use this handy feature.
+Esta funcionalidad es basante útil y frecuentemente utilizada por Clojuristas.
 
 
-## Step 2. Snowflake falling down
+## Step 2. Copo de nieve cayendo al piso
 
-Clara was satisfied with the image of the white snowflake on the blue
-background. However, that was boring. For the next step, she wanted to
-move the snowflake like it was falling down. This needed further Quil
-API study and googling.
+Clara estaba contenta con la imagen del copo de nieve blanco sobre el fondo
+azul, pero le empezó a parecer aburrida. Para el próximo paso quería mover el
+copo de nieve como si estuviera cayendo al piso. Para esto necesitaba seguir
+estudiando la API de Quil y googlear un poco más.
 
-As far as she searched, moving some pieces in the image is called
-**animation**. The basic idea is:
+Encontró que a mover piezas en una imagen se le llama **animación**, y que
+básicamente la idea es:
 
-- draw the image at some position
-- update the position
-- draw the image at updated position
+- dibujar la imagen en alguna posición,
+- actualizar la posición, y
+- dibujar otra vez la imagen, pero en la nueva posición.
 
-So-called animations repeat these steps again and again.
+La animaciones repiten estos pasos una y otra vez.
 
-### step 2-1: Add `y` parameter update
+### Paso 2-1: Agregar actualización del parámetro `y`
 
-"Well," Clara thought, "What does 'moving the snowflake like it was
-falling down' mean in terms of programming?"
+"Bueno", pensó clara, "¿qué significa 'mover el copo de nieve como si estuviera
+cayendo al piso' desde el punto de vista de la programación?".
 
-To draw the snowflake, she used Quil's `image` function, described in
-the API:
+Para dibujar el copo de nieve, había usado la función `image` de Quil, explicada
+en la documentación de la API:
 [image](http://quil.info/api/image/loading-and-displaying#image).
 
-The x and y parameters were 200 and 10 from the upper-left corner,
-which was the position she set to draw the snowflake. To make it fall
-down, the y parameter should be increased as time goes by.
+Los valores que eligió para los parámetros `x` e `y` fueron 200 y 10 medidos
+desde la esquina superior-izquierda, porque esa era la posición en la que quería
+dibujar el copo de nieve. Para hacerlo caer, el parámetro `y` debería
+incrementarse a medida que pasa el tiempo.
 
-![x and y](images/x-y-grid.png)
+![x e y](images/x-y-grid.png)
 
-In terms of programming, 'moving the snowflake like it was falling
-down' means:
+Desde el punto de vista de la programación, 'mover el copo de nieve como si
+estuviera cayendo al piso', significa:
 
-1. Set the initial state--for example, `(x, y) = (200, 10)`
-2. Draw the background first, then the snowflake
-3. Update the state - increase the `y` parameter--for example, `(x, y) = (200, 11)`
-4. Draw the background again first, then the snowflake
-5. Repeat 2 and 3, increasing the `y` parameter.
+1. Definir el estado inicial — por ejemplo, `(x, y) = (200, 10)`.
+2. Dibujar el fondo primero, y después el copo de nieve.
+3. Actualizar el estado incrementando el parámetro `y` — por ejemplo, `(x, y) = (200, 11)`.
+4. Volver a dibujar el fondo primero, y después el copo de nieve.
+5. Repetir los puntos 3 y 4.
 
-In her application, "changing state" includes only the `y`
-parameter. How could she increment the `y` value by one?
+En su app, el único estado que necesita cambiar es el parámetro `y`. ¿Cómo hizo
+para incrementar en uno el valor de `y`? Clojure tiene la función `inc`, que es
+exactamente la función que usó.
 
-Yes, Clojure has the `inc` function. This is the function she used.
-
-To update `y` parameter:
-- Add an initial `y` parameter in the map of `setup` function, which
-  represents **state**
+Para actualizar el parámetro `y`:
+- Agregar un parámetro `y` inicial en el mapa de la función `setup`, que
+  representa el **estado**.
 
     ```clojure
     {:flake (q/load-image "images/white_flake.png")
@@ -282,15 +284,16 @@ To update `y` parameter:
      :y-param 10}
     ```
 
--  Add a new function `update` which will increment the `y` parameter by one
+-  Agregar una nueva función `update` que incrementa en uno el valor del
+   parámetro `y`.
 
     ```clojure
     (defn update [state]
-      ;; updating y paraemter by one
+      ;; actualizando el parámetro y, incrementando en 1
       (update-in state [:y-param] inc))
     ```
 
--  Add the `update` function in the `q/defsketch` form
+-  Agregar la función `update` en la forma `q/defsketch`.
 
     ```clojure
     (q/defsketch practice
@@ -303,28 +306,28 @@ To update `y` parameter:
       :middleware [m/fun-mode])
     ```
 
-### step 2-2: Draw the image on updated position
+### Paso 2-2: Dibujar la imagen en la posición actualizada
 
-So far, the app got the feature to update `y` parameter;
-however, this is not enough to make the snowflake falling down.
-The snowflakes should be put on the updated position.
+Si bien la app ahora tiene la funcionalidad de actualizar el parámetro `y`, no
+le alcanza para hacer que el copo de nieve caiga. El copo de nieve se tiene que
+dibujar en la nueva posición actualizada.
 
-Clara changed the `draw` function so that `q/image` could have updated
-`y` parameter.
+Clara cambió la función `draw` para que `q/image` use el parámetro `y`
+actualizado.
 
 ```clojure
 (defn draw [state]
-  ;; drawing blue background and a snowflake on it
+  ;; dibujando un fondo azul con un copo de nieve arriba
   (q/background-image (:background state))
   (q/image (:flake state) 200 (:y-param state)))
 ```
 
-She added one more function, `(q/smooth)`, to `setup` since this would
-make animation move smoothly.
+Además, agregó una función más a `setup`, `(q/smooth)`, para que la animación
+sea más fluida.
 
-### `practice.clj` in step 2
+### `practice.clj` al final del paso 2
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -332,70 +335,69 @@ At this point, `practice.clj` looks like this:
             [quil.middleware :as m]))
 
 (defn setup []
-  (q/smooth)                                      ;; added in step 2-2
+  (q/smooth)                                      ;; se agrega en paso 2-2
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :y-param 10}                                   ;; added in step 2-1
+   :y-param 10}                                   ;; se agrega en paso 2-1
   )
 
-;; update function is added in step 2-1
+;; función update se agrega en paso 2-1
 (defn update [state]
   (update-in state [:y-param] inc))
 
 (defn draw [state]
   (q/background-image (:background state))
-  (q/image (:flake state) 200 (:y-param state))    ;; changed in step 2-2
+  (q/image (:flake state) 200 (:y-param state))    ;; se cambia en paso 2-2
   )
 
 (q/defsketch practice
   :title "Clara's Quil practice"
   :size [500 500]
   :setup setup
-  :update update                                   ;; added in step 2-1
+  :update update                                   ;; se agrega en paso 2-1
   :draw draw
   :features [:keep-on-top]
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code--hey! She saw the snowflake was falling
-down.
+Cuando Clara ejecutó este código, pudo ver como el copo de nieve caia al piso —
+genial!
 
 
-## Step 3. Make the snowflake keep falling down from top to bottom
+## Paso 3. Hacer que copo de nieve siga cayendo una y otra vez
 
-Clara got a nice Quil app. But, once the snowflake went down beyond
-the bottom line, that was it. Only a blue background remained on the
-window. So, she wanted it to repeat again and again.
+Clara tenía una linda app Quil, pero se terminaba muy rápido. Una vez que el
+copo de nieve pasaba el borde inferior de la ventana, solo quedaba el fondo
+azul. Por eso, ella quería que se repita, una y otra vez.
 
-In other words: if the snowflake reaches the bottom, it should come
-back to the top. Then, it should fall down again.
+En otras palabras: si el copo de nieve llega al fondo debería reaparecer por la
+parte superior y volver a caer.
 
-In terms of programming, what does that mean?
+¿Qué significa desde el punto de vista de la programación?"
 
-If the `y` parameter is greater than the height of the image, `y`
-parameter should go back to `0`. Otherwise, the `y` parameter should
-be incremented by one. That said, there exist two cases to update `y`
-parameter.
+Si el valor del parámetro `y` es mayor que el alto de la imagen, entonces su
+valor debe volver a `0`. Si no lo es, su valor debe incrementarse en uno. Ahora
+existen dos formas de actualizar el parámetro `y`.
 
-Clara recalled `if` was used for
-[Flow Control](http://clojurebridge.github.io/curriculum/outline/flow_control.html)
-at the ClojureBridge workshop. It looked `if` would handle the two cases
-well like this:
+
+Clara se acordó que en workshop de ClojureBridge había usado `if`
+[Flow Control](http://clojurebridge.github.io/curriculum/outline/flow_control.html).
+ Parecía que con `if` iba a poder elegir entre los dos casos.
 
 ```clojure
 (defn update [state]
-  (if (>= (:y-param state) (q/height)) ;; y-param is greater than or equal to image height?
-    (assoc state :y-param 0)           ;; true - get it back to the 0 (top)
-    (update-in state [:y-param] inc)   ;; false - update y paraemter by one
+  (if (>= (:y-param state) (q/height)) ;; y-param es igual o mayor que el alto de la imagen?
+    (assoc state :y-param 0)           ;; si - vuelve a 0 (arriba)
+    (update-in state [:y-param] inc)   ;; no - incrementar en 1
     ))
 ```
 
-So, she used `if` to make the snowflake go back to the top in the
-update function.
+Y así fue como Clara uso `if` para hacer que el copo de nieve vuelva arriba de
+todo en la función `update`.
 
-### `practice.clj` in step 3
+### `practice.clj` al final del paso 3
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -409,7 +411,7 @@ At this point, `practice.clj` looks like this:
    :y-param 10})
 
 (defn update [state]
-  ;; these three lines were added in step 3
+  ;; estas tres líneas se agregan en el paso 3
   (if (>= (:y-param state) (q/height))
     (assoc state :y-param 0)
     (update-in state [:y-param] inc)))
@@ -428,22 +430,20 @@ At this point, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-Clara saw the snowflake appeared from the top after it went down below
-the bottom line.
+Cuando Clara ejecutó este código, pudo ver al copo de nieve aparecer por arriba
+después de desaparecer por abajo.
 
+## Paso 4. Agregar más copos de nieve cayendo
 
-## Step 4. Make more snowflakes falling down from top to bottom
+Clara pensó, "es lindo como cae el copo de nieve una y otra vez, pero tengo uno
+solo, ¿puedo agregar más?". Ella quería ver más copos de nieve cayendo: uno o
+más en la mitad izquierda, y uno o más en la mitad derecha.
 
-Clara thought, "It's nice to look at the snowflake falls down many
-times. But I have only one snowflake. Can I add more?"
-She wanted to see more snowflakes falling down: one or more on the left
-half, as well as one or more on the right half.
-
-Again, she needed to express her thoughts by the words of programming
-world. Looking at her code already written, she figures out, "This
-would be 'draw multiple images with the different `x` parameters.'"
-The easiest way would be to copy-paste `(q/image (:flake state) 200 (:y-param state)`
-multiple times with the different `x` parameters. For example,
+Una vez más, necesitaba expresar sus pensamientos usando palabras del mundo de
+la programación. Mirándo al código que había escrito, se da cuenta que se
+traduciría a "dibujar varias imágenes con distintos valores para el parámetro
+`x`". La forma más simple sería copiar y pegar `(q/image (:flake state) 200
+(:y-param state)` varias veces con diferentes valores de `x`. Por ejemplo:
 
 ```clojure
 (q/image (:flake state) 10 (:y-param state))
@@ -451,42 +451,43 @@ multiple times with the different `x` parameters. For example,
 (q/image (:flake state) 390 (:y-param state))
 ```
 
-But, for Clara, this did not look nice; she learned a lot about
-Clojure and wanted to use what she knew.
+Pero para clara, esto no se veía bien; había aprendido un montón sobre Clojure y
+quería ponerlo en práctica.
 
-First, she thought about how to keep multiple `x` parameters. She
-remembered there was a `Vectors` in the
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html)
-section, which looked a good fit in this case.
+Pensando en cómo mantener registro de varios parámetros `x` se acordó de los
+vectores que vió cuando aprendió sobre [Estructuras de
+Datos](http://clojurebridge.github.io/curriculum/outline/data_structures.html) y
+le parecieron una buena idea.
 
-Here's what she did to add more snowflakes:
+Esto es lo que hizo para agregar más copos de nieve:
 
-1. Add a vector which has multiple `x` parameters assigned to a name
-with `def`.
+1. Agregar un vector, con varios parámetros `x`, y asignarle un nombre con
+   `def`.
 
     ```clojure
-    (def x-params [10 200 390]) ;; x parameters for three snowflakes
+    (def x-params [10 200 390]) ;; parámetros x para 3 copos de nieve
     ```
 
-2. Draw snowflakes as many times as the number of `x`-params using `doseq`.
+2. Dibujar varios copos de nieve, uno por cada parámetro `x`, usando `doseq`.
 
     ```clojure
     (doseq [x x-params]
       (q/image (:flake state) x (:y-param state)))
     ```
 
-* See, [doseq](http://clojurebridge.github.io/curriculum/outline/sequences.html#/3)
+* Para recordar como funciona `doseq` podés consultar la
+  [currícula](http://clojurebridge.github.io/curriculum/outline/sequences.html#/3).
 
-### `practice.clj` in step 4
+### `practice.clj` al final del paso 4
 
-At this point, `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
-(def x-params [10 200 390])                      ;; added in step 4
+(def x-params [10 200 390])                      ;; se agregó en el paso 4
 
 (defn setup []
   (q/smooth)
@@ -501,8 +502,8 @@ At this point, `practice.clj` looks like this:
 
 (defn draw [state]
   (q/background-image (:background state))
-  (doseq [x x-params]                              ;; two lines were changed
-    (q/image (:flake state) x (:y-param state))))  ;; in step 4
+  (doseq [x x-params]                              ;; dos líneas se cambiaron
+    (q/image (:flake state) x (:y-param state))))  ;; en el paso 4
 
 (q/defsketch practice
   :title "Clara's Quil practice"
@@ -514,34 +515,36 @@ At this point, `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-"Yes!" Clara shouted when she saw three snowflakes kept falling down.
+"Si!" Clara gritó al ver tres copos de nieve cayendo una y otra vez.
 
 
-## Step 5. Make snowflakes keep falling down at different speed
+## Paso 5. Hacer que los copos de nieve caigan a distintas velocidades
 
-Although her app looked lovely, Clara felt something was not quite
-right. In her window, all three snowflakes fell down at the same
-speed like a robots' march. It did not look natural. So, she wanted to
-make them fall down at different speed.
+A pesar de que su app se veía encantadora, Clara no podía evitar sentir que algo no
+estaba del todo bien. En su ventana, los tres copos de nieve caían a la misma
+velocidad, como si estuvieran en una marcha de robots. No se sentía natural. Por
+esto quiso hacer que cada uno caiga a una velocidad distinta.
 
-Using programming terms, the problem here is that all three snowflakes
-share the same `y` parameter.
-Given that using multiple `y` parameters would solve the problem--but how?
+Usando términos de programación, el problema es que los tres copos de nieve
+comparten el mismo parámetro `y`. Varios parámetros `y` solucionarían el
+problema pero, ¿cómo lo implementaríamos?
 
-### step 5-1 Change `y` parameters to maps with speeds
+### Paso 5-1 Cambiar el parámetro `y` por mapas con velocidades
 
-As she used `vector` for the x parameters, the `vector` would be a good data
-structure to have different `y` parameters as well. However, this
-should not be a simple vector since each snowflake will have two
-parameters, height and speed. Having these two, Clara could change the
-falling speed of each snowflake.
+Al igual que con los parámetros `x`, un `vector` es una buena estructura de
+datos para tener diferentes parámetros `y`. Sin embargo, este vector no puede
+ser exactamente igual al que usó para los parámetros `x` ya que cada copo de
+nieve tiene dos parámetros: la posición y la velocidad. Tener los dos parámetros
+le permitiría a Clara cambiar la velocidad a la que cae cada copo de nieve.
 
-Well, she was back to ClojureBridge curriculum and went to
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html).
-There was a data structure called `Maps` which allowed her to save
-multiple parameters. Looking at maps examples, she changed the `y-param` from a
-single value to a vector of 3 maps. Also, the keyword was changed from
-`y-param` to `y-params`. Now her initial **state** became this:
+Entonces volvió a la currícula de ClojureBridge y repasó la sección de
+[Estructuras de Datos
+](http://clojurebridge.github.io/curriculum/outline/data_structures.html). Ahí
+había una estructura de datos llama Mapa que le permitía guardar varios
+parámetros juntos. Después de ver los ejemplos de mapas, cambió `y-param` de un
+valor simple (un número) a un vector de 3 mapas. Además, cambió la clave de
+`y-param` a `y-params`. A partir de ese momento, su **estado** inicial se
+convirtió en esto: d
 
 ```clojure
 {:flake (q/load-image "images/white_flake.png")
@@ -549,44 +552,44 @@ single value to a vector of 3 maps. Also, the keyword was changed from
  :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]}
 ```
 
-It was a nice data structure, actually maps in a vector in a map
-including outer map. Downside was, her `update` function would not be
-simple anymore. What she had to do was updating all `y` values in
-the three maps within a vector.
+Era una buena estrucura de datos, mapas dentro de un vector que a su vez estaba
+dentro de otro mapa. Lo malo era que su función `update` no iba a poder seguir
+siendo simple, ahora tenía que actualizar los valores `y` de cada uno de los
+tres mapas del vector.
 
+### Paso 5-2 Actualizar valores en los mapas del vector
 
-### step 5-2 Update values in maps in the vector
-
-Thinking both map and vector at the same time was confusing to her, so
-she decided to think about map only. Each map has `y` parameter and
-`speed`:
+Pensar al mismo tiempo en mapas y vectores le resultaba confuso, entonces
+decidió concentrarse solo en un mapa. Cada mapa tiene un parámetro `y` y
+`speed`. Por ejemplo, el siguiente mapa podría ser parte del **estado** inicial:
 
 ```clojure
 {:y 150 :speed 4}
 ```
-as an initial **state**. The very next moment, speed should be added
-to y value. As a result, the map should be updated to:
+
+Inmediatamente, la velocidad `speed` debería sumarse al valor de `y`, por lo que
+el mapa debería actualizarse a:
 
 ```clojure
 {:y 154 :speed 4}
 ```
 
-To accomplish this map update, Clara added `update-y` function:
+Para lograr esto, Clara agregó la función `update-y`:
 
 ```clojure
 (defn update-y
   [m]
   (let [y (:y m)
         speed (:speed m)]
-    (if (>= y (q/height))           ;; y is greater than or equal to image height?
-      (assoc m :y 0)                ;; true - get it back to the 0 (top)
-      (update-in m [:y] + speed)))) ;; false - add y value and speed
+    (if (>= y (q/height))           ;; y es igual o mayor que el alto de la imagen?
+      (assoc m :y 0)                ;; si - vuelve a 0 (arriba)
+      (update-in m [:y] + speed)))) ;; no - sumar el valor de y y speed
 ```
 
-#### [bonus] destructuring
+#### [Bonus] Desestructuración
 
-Using Clojure's destructuring, we can write `update-y` function like
-this:
+Usando la desestructuración de Clojure, podemos escribir `update-y` de esta
+manera:
 
 ```clojure
 (defn update-y
@@ -596,30 +599,32 @@ this:
     (update-in m [:y] + speed)))
 ```
 
-As in the code, we can skip let binding.
+Así nos evitamos de escribir la forma especial `let`.
 
 
-### step 5-3 Update maps in the vector
+### Paso 5-3 Actualizar los mapas en el vector
 
-Next step is to update maps in the vector using `update-y` function.
-Before writing this part, Clara cut down the problem to focus on
-updating a vector: how to update contents in a vector. She remembered
-there was a `map` function which allowed her to apply a function to
-each element in the vector.
-[`map` function](http://clojurebridge.github.io/curriculum/outline/functions.html#/9)
+El siguiente paso es actualizar los mapas en el vector usando la función
+`update-y`. Antes de programar a esta parte, Clara redujo el problema para
+concentrarse en actualizar un vector: ¿cómo se actualizan los datos dentro un
+vector?. Se acordó que existía una [función
+`map`](http://clojurebridge.github.io/curriculum/outline/functions.html#/9) que
+le permitía aplicar una función a cada elmento del vector.
 
-For example:
+Por ejemplo:
 
 ```clojure
 (map inc [1 2 3]) ;=> (2 3 4)
 ```
 
-> Clojure has a `map` function and `map` data structure.
-> Be careful, this is confusing.
-> In Python, function is a `map`, data structure is dictionary.
-> In Ruby, function is a `map` or `collect`, data structure is hash.
+> Clojure tiene una función `map` y una estructura de datos también llamada
+> `map` (mapa).
+> Ten cuidado, es confuso.
+> En Python, `map` es la función, y diccionario es la estructura de datos.
+> En Ruby, `map` (tamibén llamada `collect`) es la función, y hash es la
+> estructura de datos.
 
-She tested the function on the insta-REPL:
+Entonces probó la función en el REPL:
 
 ```clojure
 (defn update-test
@@ -636,10 +641,10 @@ She tested the function on the insta-REPL:
 ;=> ({:y 11, :speed 1} {:y 154, :speed 4} {:y 52, :speed 2})
 ```
 
-It looked good, so she got back to her `practice.clj` file to change
-`update` function. This function should return the **state** as the
-map which includes `:y-params` key with the update vector as a value.
-Her `update` function became like this:
+Como funcionó bien, volvió a su archivo `practice.clj` para cambiar la función
+`update`. Esta función debe devolver el **estado** actualizado. En su caso, lo
+único que es necesario actualizar es el vector asociado a la clave `y-params`.
+Así, su función `update` se convirtió en:
 
 ```clojure
 (defn update [state]
@@ -648,17 +653,18 @@ Her `update` function became like this:
 ```
 
 
-### step 5-4 Update draw function to see maps in the vector
+### Paso 5-4 Actualizar la función draw para que vea los mapas del vector
 
-Another challenge was the `draw` function change to see values in the
-maps which were in the vector.
-Clara found a couple of ways to repeat something in Clojure. Among
-them, she chose `dotimes` and `nth` to repeatedly draw images; the
-`nth` function is the one in the curriculum:
-[Data Structures](http://clojurebridge.github.io/curriculum/outline/data_structures.html#/6)
+Otro desafío fue el cambio que necesitó hacerle a la función `draw` para que
+pueda ver los mapas que se encontraban en el vector. Clara encontró varias
+maneras de repertir algo en Clojure. Entre ellas, eligió una alternativa que
+usaba `dotimes` y `nth` para dibujar imágenes repetidamente — la función `nth`
+es la que se explica en la sección [Estructuras de
+Datos](http://clojurebridge.github.io/curriculum/outline/data_structures.html#/6)
+de la currícula.
 
-In this case, she knew there were exactly 3 snowflakes, so she changed
-the code to draw 3 snowflakes as shown below:
+En este caso, como sabía que había exactamente 3 copos de nieves, pudo cambiar
+el código por el siguiente:
 
 ```clojure
 (let [y-params (:y-params state)]
@@ -666,9 +672,9 @@ the code to draw 3 snowflakes as shown below:
       (q/image (:flake state) (nth x-params n) (:y (nth y-params n)))))
 ```
 
-### `practice.clj` in step 5
+### `practice.clj` al final del paso 5
 
-At this point, her entire `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -681,9 +687,9 @@ At this point, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]})  ;; changed in step 5-1
+   :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]})  ;; se cambió en el paso 5-1
 
-;; update-y function was added in step 5-2
+;; función update-y se agregó en el paso 5-2
 (defn update-y
   [m]
   (let [y (:y m)
@@ -693,12 +699,12 @@ At this point, her entire `practice.clj` looks like this:
       (update-in m [:y] + speed))))
 
 (defn update [state]
-  (let [y-params (:y-params state)]                   ;; update function
-    (assoc state :y-params (map update-y y-params)))) ;; was changed in step 5-3
+  (let [y-params (:y-params state)]                   ;; función update
+    (assoc state :y-params (map update-y y-params)))) ;; se cambió en el paso 5-3
 
 (defn draw [state]
   (q/background-image (:background state))
-  (let [y-params (:y-params state)]   ;; three lines below were changed in step 5-4
+  (let [y-params (:y-params state)]   ;; 3 líneas se cambiaron en el paso 5-4
     (dotimes [n 3]
       (q/image (:flake state) (nth x-params n) (:y (nth y-params n))))))
 
@@ -712,26 +718,27 @@ At this point, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When she ran the code, three snowflakes kept falling down at
-different speeds. It looked more natural.
+Cuando Clara ejecutó este código, tres copos de nieve cayeron a distintas
+velocidades y se veía más natural.
 
+## Paso 6. "Refactorizar"
 
-## Step 6. Do some "refactoring"
+Clara miró a su archivo `practice.clj` pensando que su código se había vuelto
+bastante largo.
 
-Clara looked at her `practice.clj` thinking her code got longer for a while.
-
-Scanning her code from top to bottom again, she thought
-"`x-params` may be part of the **state**," for example:
+Después de escanear otra vez su código de arriba a abajo, pensó "tal vez
+`x-params` podría ser parte del **estado**". Por ejemplo:
 
 ```clojure
 [{:x 10 :y 10 :speed 1} {:x 200 :y 150 :speed 4} {:x 390 :y 50 :speed 2}]
 ```
 
-She found that this new data structure was easy to maintain the state of each snowflake.
+Se encontró con que esta nueva estructura de datos facilitaba la tarea de
+mantener el estado de cada copo de nieve.
 
-To use this new data structure, she changed her `setup` function to
-return the initial **state** which included x parameters also. The key
-name was changed from `:y-params` to `:params`:
+Para usar la nueva estructura de datos, cambió su función `setup` para que el
+**estado** inicial incluya los parámetros `x`. Además, cambió el nombre de la
+clave `:y-params` a `:params`:
 
 ```clojure
 {:flake (q/load-image "images/white_flake.png")
@@ -741,12 +748,13 @@ name was changed from `:y-params` to `:params`:
             {:x 390 :y 50  :speed 2}]}
 ```
 
-Clara stared at `update-y` function and concluded to leave as it was.
-Since existence of `:x` and its value didn't affect updating y value.
-The function returned the map with three key-value pairs with updated y value.
+Clara miró fijamente a la función `update-y` y concluyó dejarla como estaba. La
+existencia de `:x` y su valor no afectaba la lógica que actualizaba el valor de
+`:y`. La función devolvía el mapa con tres pares clave-valor con el valor de
+`:y` actualizado.
 
-What about `update` function? This needed a little change since key
-name was changed from `:y-params` to `:params`.
+¿Qué pasaba con la función `update`? Necesitaba un pequeño cambio dado que el
+nombre de la clave cambió de `:y-params` a `:params`.
 
 ```clojure
 (defn update [state]
@@ -754,9 +762,9 @@ name was changed from `:y-params` to `:params`.
     (assoc state :params (map update-y params))))
 ```
 
-The `draw` function would have a bigger change since the way to
-extract x values was changed.
-At first, Clara changed `dotimes` function like this:
+La función `draw` requería un cambio mayor porque la forma en la que se extraían
+los valores de `:x` había cambiado. En un primer lugar, Clara cambió la forma
+`dotimes` así:
 
 ```clojure
 (let [params (:params state)]
@@ -764,10 +772,11 @@ At first, Clara changed `dotimes` function like this:
     (q/image (:flake state) (:x (nth params n)) (:y (nth params n)))))
 ```
 
-But, the exact the same thing, `(nth params n)`, appeared twice.
-"Is there anything better to avoid repetition?" she thought.
-The answer was easy - use `let` binding within `dotimes` function.
-Using `let`, her `dotimes` form turned to:
+Pero la misma cosa, `(nth params n)`, aparecía dos veces. "¿Hay algo mejor para
+evitar la repetición?" pensó. La respuesta era fácil — usar la forma especial
+`let` dentro de la función `dotimes`.
+
+Al usar `let`, su forma `dotimes` se quedó así:
 
 ```clojure
 (let [params (:params state)]
@@ -776,11 +785,11 @@ Using `let`, her `dotimes` form turned to:
       (q/image (:flake state) (:x param) (:y param)))))
 ```
 
-The last line got much cleaner!
+¡Esa última línea quedó mucho más limpia!
 
-### `practice.clj` in step 6
+### `practice.clj` al final del paso 6
 
-At this moment, her entire `practice.clj` looks like this:
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -791,7 +800,7 @@ At this moment, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :params [{:x 10  :y 10  :speed 1}                       ;; changed in step 6
+   :params [{:x 10  :y 10  :speed 1}                       ;; se cambió en el paso 6
             {:x 200 :y 150 :speed 4}                       ;;
             {:x 390 :y 50  :speed 2}]})                    ;;
 
@@ -804,12 +813,12 @@ At this moment, her entire `practice.clj` looks like this:
       (update-in m [:y] + speed))))
 
 (defn update [state]
-  (let [params (:params state)]                    ;; changed to params in step 6
+  (let [params (:params state)]                    ;; se cambió por params en el paso 6
     (assoc state :params (map update-y params))))  ;;
 
 (defn draw [state]
   (q/background-image (:background state))
-  (let [params (:params state)]                            ;; changed in step 6
+  (let [params (:params state)]                            ;; se cambió en el paso 6
     (dotimes [n 3]                                         ;;
       (let [param (nth params n)]                          ;;
         (q/image (:flake state) (:x param) (:y param)))))) ;;
@@ -824,34 +833,36 @@ At this moment, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-She saw the exact same result as the step 5, but her code
-looked nicer. This sort of work is often called "refactoring".
+Clara no vió ningún cambio con respecto al paso 5, pero el código se veía mucho
+mejor. A este tipo de trabajo se lo conoce comunmente como "refactorización".
 
-## Step 7. Make snowflakes swing as falling down
+## Paso 7. Hacer que los copos de nieve se balanceen mientras caen
 
-Clara was getting much familiar with Clojure coding. Her Quil app was
-getting much more fantastic, as well!
+Clara se estaba familiarizando cada vez más con la programación en Clojure. Al
+mismo tiempo, ¡su app Quil se estaba volviendo cada vez más fantástica!
 
-It was amusing to look at snowflakes falling down in different speeds.
-But, something she didn't like was... all of the snowflakes were
-falling straight down. This was much better than marching robots:
-however, it would be awesome if snowflakes were swinging left and
-right as falling down.
+Era muy entretendio ver a los copos de nieve caer a velocidades diferentes.
+Pero, había algo que no le convencía... todos los copos de nieve estaban cayendo
+en línea recta. Aunque esto era mucho mejor que la marcha de robots del
+principio, sería increíble si lso copos de nieve pudieran balancearse de
+izquierda a derecha mientras caen.
 
-In the words of programming, the `x` parameter should either increase or
-decrease when the value is updated. This means that the `update`
-function should update the `x` parameters as well as the `y`
-parameters so that snowflakes took a trace like this:
+En palabras de programación, el parámetro `x` se debería incrementar o
+decrementar cuando el **estado** es actualizado. Esto significa que la función
+`update` debería actualizar los parámetros `x` así como los paramétros `y`, de
+tal manera que los copos de nieve sigan una trayectoria como la de la imagen.
 
 ![curve to fall down](images/curve.png)
 
-This would be a big challenge to her.
+¡Esto va a ser todo un desafío!
 
-### step 7-1 Add swing parameter to initial **state**
+### Paso 7-1 Agregar un parámetro swing al **estado** inicial
 
-Clara already knew from her experience on y value: different swing parameters
-to three x values would give her nice swing motion.
-She changed the initial **state** to have swing parameter like this:
+Clara ya sabía por su experiencia con el parámetro `y` y la velocidad, que para
+conseguir un movimiento natural de balanceo debía agregar un parámetro de
+balanceo,`:swing`, por cada parámetro `x`.
+
+Por esto modificó el **estado** incial para que tenga parámetros de balanceo:
 
 ```clojure
 [{:x 10  :swing 1 :y 10  :speed 1}
@@ -859,13 +870,14 @@ She changed the initial **state** to have swing parameter like this:
  {:x 390 :swing 2 :y 50  :speed 2}]
 ```
 
-The `swing` parameters should work to give different ranges between
-leftmost and rightmost of the curve.
+Distintos valores de `swing` deberían producir distintos rangos entre la parte
+que se encuentra más a la izquierda y la parte que se encuentra más a la
+derecha de la curva.
 
 ![swing of curve](images/curve-range.png)
 
 
-Her `setup` function became like this:
+Su función `setup` se convirtió en esto:
 
 ```clojure
 (defn setup []
@@ -877,56 +889,57 @@ Her `setup` function became like this:
             {:x 390 :swing 2 :y 50  :speed 2}]})
 ```
 
-### step 7-2 Calculate x values to swing snowflakes
+### Paso 7-2 Calcular valores de x para balancear los copos de nieve
 
-Updating x values were quite similar to the one for y values.
-Like Clara added the `update-y` function, she was about to write
-`update-x` function. But she stopped and thought, "How can I calculate
-updated x values?" sketching a curve in her mind.
+Clara pensó en actualizar los valores de `x` de forma similar a la actualización
+de los valores de `y`. Sin embargo, justo antes de escribir la función
+`update-x` sacó las manos del teclado y pensó "¿Cómo puedo calcular los nuevos
+valores de `x`?" mientras dibujaba la curva de su trayectoria en su mente.
 
-She went to Quil api document and scanned the functions thinking some
-might have helped her. She found
-[`sin`](http://quil.info/api/math/trigonometry#sin) function which
-was to calculate the sine of an angle. Also she recalled what was the shape
-of sine curve.
+Volvió a la documentación de la API de Quil y escaenó las funciones pensando que
+alguna podría ayudarla. Encontró la función
+[`sin`](http://quil.info/api/math/trigonometry#sin) que calcula el seno de un
+ángulo y se imaginó la gráfica de la curva de esa función.
 
-The curve she want had roughly the shape of:
+La curva que quería tenía una forma muy parecida a:
 
 ```
 x = sin(y)
 ```
 
-If she considered the size of window, a couple more parameters were
-needed to make swing look nice, for example:
+Pero, si consideraba el tamaño de la ventana, iba a necesitar algunos parametros
+más para que el balanceo se vea bien, por ejemplo:
 
 ```
 x = x + a * sin(y / b)
 ```
 
-The parameter `a` exactly works as the `swing` she added to the **state**.
-When the `swing` is 1, the curve traces like in the left image. While
-the `swing` is 3, the curve becomes the right image.
+El parámetro `a` funciona exactamente como el `swing` que había agregado al
+**estado**. Cuando `swing` es 1, la curva se comporta como la imagen de la
+izquierda. Mientras que cuando `swing` es 3, la curva se convierte en la que se
+muestra en la imagen de la derecha.
 
 ![swing is 1](images/1-sin-x.png)  ![swing is 3](images/3-sin-x.png)
 
-The parameter `b` adjusts distances between peeks. If the value is
-small, the snowflake goes left and right busily. On the other hand, if
-the value is big, the snowflakes moves loosely. Thinking of the size
-of window, 50 would be a good number for `b`.
-Given that, the update function would be:
+El parámetro `b` ajusta la distancia entre los picos. Si el valor es pequeño, el
+copo de nieve va de izquierda a derecha muy agitadamente. Por el otro lado, si
+el valor es grande, el copo de nieve se va a mover más relajadamente. Al
+considerar el tamaño de la ventana, 50 sería un buen número para `b`. Teniendo
+en cuenta todo lo anterior, la función que se encarga de actualizar `x` quedaría
+así:
 
 ```
 x = x + swing * sin(y / 50)
 ```
 
-Not just update x values, the function should handle the cases x is
-smaller than 0 (too left), and x is greater than image width (too
-right). When the x value goes to less than `0`, it should take the value of the
-image width, so that the snowflake will appear from the right.
-Likewise, when the x value goes to more than the image width, it
-should have value `0` so that the snowflake will appear from the left.
-Reflecting this conditions, her `update-x` function became
-like this:
+Pero esto no era todo. La función además debía considerar los casos en los que
+`x` es menor que 0 (muy a la izquierda) y que `x` es mayor que el ancho de la
+imagen (muy a la derecha). Cuando el valor de `x` se hace más chico que 0, `x`
+debería tomar el ancho de la imagen así el copo de nieve aparece por la derecha
+cuando desaparece por la izquierda. De manera similar, cuando el valor de `x` se
+hace más grande que el ancho de la imagen, debería hacerse 0, así el copo de
+nieve aparece por la izquierda. Con estas nuevas restricciones, su función
+`update-x` quedo así:
 
 ```clojure
 (defn update-x
@@ -940,20 +953,20 @@ like this:
      :else (assoc m :x 0))))                                         ;; too right
 ```
 
-In this function, she couldn't use `if` anymore since `if` takes only one
-predicate (comparison). Instead of `if`, she used `cond` which allowed
-her to handle multiple comparisons.
+En esta función, Clara no podía seguir usando `if` porque `if` solamente acepta
+un predicado (comparación). En lugar de `if`, usó `cond` que permite realizar
+varias comparaciones.
 
+### Paso 7-3 Actualizar los valores de x e y de los mapas del vector
 
-### step 7-3 Update x and y values in maps in the vector
-
-Clara got `update-y` and `update-x` functions. The next step would be
-to use these functions to update x and y values in maps in the vector.
-This would not be a big deal for her anymore. Tricky thing was it
-needed after updating y values in maps, it should update x values in
-the same maps. Luckily, Clojure's `let` binding treats this sort of
-value changes well. Within `let`, each binding is evaluated from the
-first to last one by one. The `update` function turned to this:
+Clara tenía listas las funciones `update-x` y `update-y`. El próximo paso era
+ahora usar esas funciones para actualizar los valores de `x` e `y` en los mapas
+del vector. Por suerte, ya no le parecía un gran desafío. Lo único novedoso era
+que después de actualizar los valores de `y` en los mapas, necesitaba actualizar
+los valores de `x` en los mismos mapas. La forma `let` de Clojure permite
+realizar este tipo de actualizaciones. Dentro de `let`, las asignaciones se
+evalúan una por una, empezando por la primera, luego la segunda, y así hasta
+llegar a la última. La función `update` quedó así:
 
 ```clojure
 (defn update [state]
@@ -963,20 +976,21 @@ first to last one by one. The `update` function turned to this:
     (assoc state :params params)))
 ```
 
-The first binding assigns params vector to a name, `params`. The second
-binding updates y values in the `params` (maps in vector) and assigns to the
-name, `params`. The third binding updates x values in the `params`
-(maps in vector) and assigns to the name, `params`. When `params`
-comes to the body of `let` function, in other words, the line of
-`assoc`, both x and y values are already updated.
-
-These were all to swing the snowflakes. She could use `draw` function
-as it was.
+La primer asignación asocia el vector con los parámetros al nombre `params`. La
+segunda asignación actualiza los valores `y` en los mapas de `params` y asigna
+el resultado, otra vez, al nombre `params`. La tercer y última asignación, 
+actualiza los valores `x` en los mapas de `params` y asigna el resultado, otra
+vez, al nombre `params`. En el cuerpo de `let` (la línea que empieza con
+`assoc`) `params` tiene los valores de `x` e `y` ya acutalizados.
 
 
-### `practice.clj` in step 7
+No necesitaba nada más para balancear los copos de nieve, podía usar la función
+`draw` como estaba sin ninguna modificación.
 
-At this point, her entire `practice.clj` looks like this:
+
+### `practice.clj` al final del paso 7
+
+A esta altura, `practice.clj` se veía así:
 
 ```clojure
 (ns drawing.practice
@@ -987,11 +1001,11 @@ At this point, her entire `practice.clj` looks like this:
   (q/smooth)
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
-   :params [{:x 10  :swing 1 :y 10  :speed 1}       ;; swing was added in step 7-1
+   :params [{:x 10  :swing 1 :y 10  :speed 1}       ;; swing se agregó en el paso 7-1
             {:x 200 :swing 3 :y 100 :speed 4}       ;;
             {:x 390 :swing 2 :y 50  :speed 2}]})    ;;
 
-;; this update-x function was added in step 7-2
+;; función update-x se agregó en el paso 7-2
 (defn update-x
   [m]
   (let [x (:x m)
@@ -1013,7 +1027,7 @@ At this point, her entire `practice.clj` looks like this:
 (defn update [state]
   (let [params  (:params state)
         params (map update-y params)
-        params (map update-x params)]               ;; added in step 7-3
+        params (map update-x params)]               ;; se agregó en el paso 7-3
     (assoc state :params params)))
 
 (defn draw [state]
@@ -1033,16 +1047,16 @@ At this point, her entire `practice.clj` looks like this:
   :middleware [m/fun-mode])
 ```
 
-When Clara ran this code, she saw snowflakes were falling down,
-swinging left and right tracing sine curve.
-"Cool!" she shouted with joy.
+Cuando Clara ejecutó este código, vio como los copos de nieve se balanceaban de
+izquierda a derecha siguiendo una curva seonidal mientras caían. "¡Copado!"
+gritó con alegría.
 
-Still, she could a couple more improvements including refactoring,
-Clara was satisfied with her app. Moreover, she started
-thinking about her next, more advanced app in Clojure!
+Aunque le faltaban algunas mejoras y refactorizaciones, Clara ya
+estaba estaba contenta con su app. Por otra parte, ¡ya había empezado a pensar en
+su próxima app en Clojure! Iba a ser muhco más avanzada.
 
-The End.
+Fin.
 
 
 --------------
-Snowflake is designed by Freepik, http://www.flaticon.com/packs/snowflakes
+Snowflake (el copo de nieve) fue diseñado por Freepik, http://www.flaticon.com/packs/snowflakes
