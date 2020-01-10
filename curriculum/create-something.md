@@ -836,31 +836,33 @@ A esta altura, `practice.clj` se veía así:
 Clara no vió ningún cambio con respecto al paso 5, pero el código se veía mucho
 mejor. A este tipo de trabajo se lo conoce comunmente como "refactorización".
 
-## Step 7. Make snowflakes swing as falling down
+## Paso 7. Hacer que los copos de nieve se balanceen mientras caen
 
-Clara was getting much familiar with Clojure coding. Her Quil app was
-getting much more fantastic, as well!
+Clara se estaba familiarizando cada vez más con la programación en Clojure. Al
+mismo tiempo, ¡su app Quil se estaba volviendo cada vez más fantástica!
 
-It was amusing to look at snowflakes falling down in different speeds.
-But, something she didn't like was... all of the snowflakes were
-falling straight down. This was much better than marching robots:
-however, it would be awesome if snowflakes were swinging left and
-right as falling down.
+Era muy entretendio ver a los copos de nieve caer a velocidades diferentes.
+Pero, había algo que no le convencía... todos los copos de nieve estaban cayendo
+en línea recta. Aunque esto era mucho mejor que la marcha de robots del
+principio, sería increíble si lso copos de nieve pudieran balancearse de
+izquierda a derecha mientras caen.
 
-In the words of programming, the `x` parameter should either increase or
-decrease when the value is updated. This means that the `update`
-function should update the `x` parameters as well as the `y`
-parameters so that snowflakes took a trace like this:
+En palabras de programación, el parámetro `x` se debería incrementar o
+decrementar cuando el **estado** es actualizado. Esto significa que la función
+`update` debería actualizar los parámetros `x` así como los paramétros `y`, de
+tal manera que los copos de nieve sigan una trayectoria como la de la imagen.
 
 ![curve to fall down](images/curve.png)
 
-This would be a big challenge to her.
+¡Esto va a ser todo un desafío!
 
-### step 7-1 Add swing parameter to initial **state**
+### Paso 7-1 Agregar un parámetro swing al **estado** inicial
 
-Clara already knew from her experience on y value: different swing parameters
-to three x values would give her nice swing motion.
-She changed the initial **state** to have swing parameter like this:
+Clara ya sabía por su experiencia con el parámetro `y` y la velocidad, que para
+conseguir un movimiento natural de balanceo debía agregar un parámetro de
+balanceo,`:swing`, por cada parámetro `x`.
+
+Por esto modificó el **estado** incial para que tenga parámetros de balanceo:
 
 ```clojure
 [{:x 10  :swing 1 :y 10  :speed 1}
@@ -868,13 +870,14 @@ She changed the initial **state** to have swing parameter like this:
  {:x 390 :swing 2 :y 50  :speed 2}]
 ```
 
-The `swing` parameters should work to give different ranges between
-leftmost and rightmost of the curve.
+Distintos valores de `swing` deberían producir distintos rangos entre la parte
+que se encuentra más a la izquierda y la parte que se encuentra más a la
+derecha de la curva.
 
 ![swing of curve](images/curve-range.png)
 
 
-Her `setup` function became like this:
+Su función `setup` se convirtió en esto:
 
 ```clojure
 (defn setup []
